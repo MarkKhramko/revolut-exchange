@@ -9,19 +9,16 @@ import TopBar from '../components/ExchangeHistory/TopBar';
 
 const styles = {
   screenContainer:{
-    position: 'absolute',
+    position: 'relative',
     top: 0,
     left: 0,
     height: '100%',
-    overflowY: 'scroll',
-    margin: 0,
-    padding: 0,
     backgroundColor: 'white'
   },
 
-  topBarContainer:{
+  listContainer:{
     width: '100%',
-    height: 60
+    overflow: 'scroll',
   }
 }
 
@@ -48,19 +45,19 @@ class ExchangeHistoryScreen extends Component {
     };
 
     let topBar = <div></div>;
-    if(windowWidth < 768){
+    if(windowWidth < 640){
       topBar = <TopBar exchangeButtonDidPress={exchangeButtonDidPress}/>
     }
 
     return (
       <div style={ containerStyle }>
-        <div style={ styles.topBarContainer }>
-          {topBar}
+        {topBar}
+        <div style={ styles.listContainer }>
+          <List>
+            <ListItem
+            />
+          </List>
         </div>
-        <List>
-          <ListItem
-          />
-        </List>
       </div>
     );
   }

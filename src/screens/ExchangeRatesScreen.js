@@ -19,7 +19,7 @@ const styles = {
   },
 
   listContainer:{
-    marginTop: 60,
+    marginTop: 65,
     height: '100%',
     overflow: 'scroll'
   },

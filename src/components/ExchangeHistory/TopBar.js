@@ -1,36 +1,25 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import IconAutorenew from 'material-ui/svg-icons/action/autorenew';
+import BackgroundBubbles from '../BackgroundBubbles';
+import ExchangeButton from './ExchangeButton';
 
 const styles = {
   componentContainer:{
-    position: 'absolute',
+    position: 'relative',
     top: 0,
     left: 0,
     right: 0,
-    height: 60
-  },
-
-  backgroundImage:{
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    width: '100%',
-    height: '100%'
-  },
-
-  buttonExchange:{
-    width: 44,
-    height: 44
+    height: 70,
+    padding: 5,
+    
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 }
 
-class TopBar extends Component {
+export default class TopBar extends Component {
 
   _handleExchangeButtonAction(){
   }
@@ -40,17 +29,13 @@ class TopBar extends Component {
 
     return (
       <div style={ styles.componentContainer }>
-        <img 
-          src={require('../../static/blur-bg.png')}
-          style={ styles.backgroundImage }
+        <BackgroundBubbles
+          shouldFitWidth={ true }
         />
-        <FloatingActionButton 
-          style={ styles.buttonExchange }
-          backgroundColor='#0090FD'
+
+        <ExchangeButton
           onTouchTap={ exchangeButtonDidPress }
-        >
-          <IconAutorenew />
-        </FloatingActionButton>
+        />
       </div>
     );
   }
@@ -59,18 +44,3 @@ class TopBar extends Component {
 TopBar.propTypes = {
   exchangeButtonDidPress: PropTypes.func.isRequired
 };
-
-function mapStateToProps(state) {
-  return {
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TopBar);

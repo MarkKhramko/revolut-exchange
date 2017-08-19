@@ -8,7 +8,7 @@ import Slider from 'react-slick'
 const styles = {
 
   carouselSlide:{
-    height: '24vh'
+    height: '25.5vh'
   }
 }
 
@@ -16,12 +16,12 @@ const carouselSettings = {
     dots: true,
     arrows: true,
     infinite: false,
-    speed: 500,
+    speed: 350,
     vertical: false,
     slidesToShow: 1
 };
 
-class CurrencyCarousel extends Component {
+export default class CurrencyCarousel extends Component {
 
   render() {
     const {
@@ -48,20 +48,6 @@ class CurrencyCarousel extends Component {
 }
 
 CurrencyCarousel.propTypes = {
+  slideHeight: PropTypes.number.isRequired,
   slides: PropTypes.array.isRequired
 };
-
-function mapStateToProps(state) {
-  return {
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CurrencyCarousel);

@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import DesktopNavigationScreen from './DesktopNavigationScreen';
-
 import * as Tabs from '../constants/Tabs';
 
 import ExchangeScreen from './ExchangeScreen';
@@ -17,8 +15,10 @@ const styles = {
     left: 0,
     width: '100%',
     height: '100%',
+    overflowY: 'scroll',
     margin: 0,
     padding: 0,
+    textAlign: 'center',
     backgroundColor: '#F2F2F2'
   },
 
@@ -136,7 +136,7 @@ class MainScreen extends Component {
     let componentToRender;
 
     // Layout for mobiles
-    if(this.state.windowWidth < 640){
+    if(this.state.windowWidth < 768){
 
       if(currentTab === Tabs.EXCHANGE_HISTORY_TAB){
         componentToRender = 
@@ -155,11 +155,7 @@ class MainScreen extends Component {
     }
     // Layout for tablets and desktops
     else{
-      componentToRender = 
-        <DesktopNavigationScreen
-          windowWidth={windowWidth}
-          windowHeight={windowHeight}
-        />
+
     }
 
     return (

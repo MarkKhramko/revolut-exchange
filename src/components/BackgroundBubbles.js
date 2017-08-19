@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 
 const styles = {
   componentContainer:{
@@ -6,7 +7,8 @@ const styles = {
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
+    overflow: 'hidden'
   },
 
   backgroundImage:{
@@ -18,16 +20,27 @@ const styles = {
     height: '100%'
   },
 
-  buttonExchange:{
-    width: 44,
-    height: 44
+  blurBubbles:{
+    position: 'absolute',
+    top: 0,
+    left: 0
   }
 }
 
 export default class BackgroundBubbles extends Component {
 
   render() {
-    const { exchangeButtonDidPress } = this.props;
+    const {
+      shouldFitWidth
+    } = this.props;
+
+    let blurBubblesStyle = {
+      ...styles.blurBubbles,
+      height: shouldFitWidth ? 'auto' : '100%',
+      width: shouldFitWidth ? '100%' : 'auto',
+    }
+
+    console.log(blurBubblesStyle);
 
     return (
       <div style={ styles.componentContainer }>
@@ -35,8 +48,19 @@ export default class BackgroundBubbles extends Component {
           src={require('../static/blue-gradient.png')}
           style={ styles.backgroundImage }
         />
-        
+        <img 
+          src={require('../static/blur-bubbles.png')}
+          style={ blurBubblesStyle }
+        />
       </div>
     );
   }
+}
+
+BackgroundBubbles.propTypes = {
+  shouldFitWidth: PropTypes.bool
+}
+
+BackgroundBubbles.defaultPropTypes = {
+  shouldFitWidth: false
 }

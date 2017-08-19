@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import * as CurrencyRateActions from './actions/currencyRate';
-import * as APIConstants from './constants/ECBAPI';
+import * as APIConstants from './constants/ThirdPartyAPI';
 
 import { MuiThemeProvider } from 'material-ui/styles';
 

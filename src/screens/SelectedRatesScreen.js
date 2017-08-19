@@ -18,7 +18,7 @@ import ExchangeRatesScreen from './ExchangeRatesScreen';
 
 const styles = {
   screenContainer:{
-    position: 'relative',
+    position: 'absolute',
     top: 0,
     left: 0,
     width: '100%',
@@ -30,23 +30,6 @@ const styles = {
     display: 'block',
     width: '100%',
     height: TopBar.BAR_HEIGHT,
-  },
-
-  topCarouselContainer:{
-    padding: 32
-  },
-
-  bottomCarouselContainer:{
-    padding: 32,
-    paddingTop: '14%'
-  },
-
-  darkenedAreaContainer:{
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: '50%'
   },
 
   dialogTopBar:{
@@ -136,8 +119,6 @@ class ExchangeScreen extends Component {
       isRateModalOpen
     } = this.state;
 
-    // console.log(this.props.currencyRate);
-
     let componentToRender;
     if(this.state.windowWidth <= 768){
 
@@ -164,24 +145,6 @@ class ExchangeScreen extends Component {
             rateButtonDidPress={()=>this._handleRateButtonDidPress()}
             exchangeButtonDidPress={()=>{}}
           />
-        </div>
-        <div style={ styles.topCarouselContainer }>
-          <CurrencyCarousel 
-            slides={ topSlides }
-            slideHeight='25.5vh'
-          />
-        </div>
-        <div style={ styles.darkenedAreaContainer }>
-          <DarkenedArea 
-            width={windowWidth}
-            height={windowHeight/2}
-          />
-          <div style={ styles.bottomCarouselContainer }>
-            <CurrencyCarousel 
-              slides={ bottomSlides }
-              slideHeight='25.5vh'
-            />
-          </div>
         </div>
         <FullscreenDialog
           open={isRateModalOpen}

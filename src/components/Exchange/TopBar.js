@@ -37,7 +37,7 @@ const styles = {
   }
 }
 
-class TopBar extends Component {
+export default class TopBar extends Component {
 
   render() {
     const { 
@@ -80,19 +80,4 @@ TopBar.propTypes = {
   exchangeButtonDidPress: PropTypes.func.isRequired
 };
 
-function mapStateToProps(state) {
-  return {
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-  };
-}
-
 TopBar.BAR_HEIGHT = styles.componentContainer.height + 4;
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TopBar);
