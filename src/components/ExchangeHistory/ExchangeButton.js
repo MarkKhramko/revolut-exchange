@@ -47,12 +47,12 @@ export default class RateButton extends Component {
   render() {
 
     const{
-      buttonDidPress
+      onTouchTap
     } = this.props;
 
     return (
       <div 
-        onTouchTap={buttonDidPress}
+        onTouchTap={onTouchTap}
         style={ styles.componentContainer }
       >
         <div style={ styles.roundArea }>
@@ -71,7 +71,7 @@ export default class RateButton extends Component {
 }
 
 RateButton.propTypes = {
-  buttonDidPress: PropTypes.func,
+  onTouchTap: PropTypes.func,
 };
 
 RateButton.defaultPropTypes = {

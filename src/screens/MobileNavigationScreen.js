@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import * as Tabs from '../constants/Tabs';
 
-import ExchangeScreen from './ExchangeScreen';
+import NavigationStack from '../components/NavigationStack';
 import ExchangeHistoryScreen from './ExchangeHistoryScreen';
 
 const styles = {
@@ -88,7 +88,7 @@ const styles = {
   }
 }
 
-class MainScreen extends Component {
+class MobileNavigationScreen extends Component {
 
   constructor(props){
     super(props);
@@ -132,35 +132,24 @@ class MainScreen extends Component {
       currentTab
     } = this.state;
 
-
-    let componentToRender;
-
-    // Layout for mobiles
-    if(this.state.windowWidth < 768){
-
-      if(currentTab === Tabs.EXCHANGE_HISTORY_TAB){
-        componentToRender = 
-          <ExchangeHistoryScreen 
-            windowWidth={windowWidth}
-            exchangeButtonDidPress={()=>this._exchangeButtonDidPress()}
-          />
-      }
-      else if(currentTab === Tabs.EXCHANGE_TAB){
-        componentToRender = 
-          <ExchangeScreen 
-            windowWidth={windowWidth}
-            windowHeight={windowHeight}
-          />
-      }
-    }
-    // Layout for tablets and desktops
-    else{
-
-    }
+    const navigationControllerProps = {
+      // The views to place in the stack. The front-to-back order
+      // of the views in this array represents the new bottom-to-top
+      // order of the navigation stack. Thus, the last item added to
+      // the array becomes the top item of the navigation stack.
+      // NOTE: This can only be updated via `setViews()`
+      components: [
+        <ExchangeHistoryScreen 
+          shouldShowTopBar={true}
+        />
+      ]
+    };
 
     return (
     	<div style={ styles.screenContainer }>
-        {componentToRender}
+        <NavigationStack 
+            {...navigationControllerProps}
+          />
       </div>
     );
   }
@@ -179,4 +168,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MainScreen);
+)(MobileNavigationScreen);

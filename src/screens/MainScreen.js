@@ -3,12 +3,8 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import MobileNavigationScreen from './MobileNavigationScreen';
 import DesktopNavigationScreen from './DesktopNavigationScreen';
-
-import * as Tabs from '../constants/Tabs';
-
-import ExchangeScreen from './ExchangeScreen';
-import ExchangeHistoryScreen from './ExchangeHistoryScreen';
 
 const styles = {
   screenContainer:{
@@ -95,9 +91,7 @@ class MainScreen extends Component {
 
     this.state = {
       windowWidth: 0,
-      windowHeight: 0,
-
-      currentTab: Tabs.EXCHANGE_TAB
+      windowHeight: 0
     }
   }
 
@@ -115,21 +109,12 @@ class MainScreen extends Component {
     window.addEventListener("resize", this._updateDimensions.bind(this));
   }
 
-  // #section-begin Interactions
-  _exchangeButtonDidPress(){
-    let currentTab = Tabs.EXCHANGE_TAB;
-    this.setState({ currentTab });
-  }
-  // #section-end Interactions
-
   render() {
 
     // Window size
     const {
       windowWidth,
-      windowHeight,
-
-      currentTab
+      windowHeight
     } = this.state;
 
 
@@ -137,21 +122,7 @@ class MainScreen extends Component {
 
     // Layout for mobiles
     if(this.state.windowWidth < 640){
-
-      if(currentTab === Tabs.EXCHANGE_HISTORY_TAB){
-        componentToRender = 
-          <ExchangeHistoryScreen 
-            windowWidth={windowWidth}
-            exchangeButtonDidPress={()=>this._exchangeButtonDidPress()}
-          />
-      }
-      else if(currentTab === Tabs.EXCHANGE_TAB){
-        componentToRender = 
-          <ExchangeScreen 
-            windowWidth={windowWidth}
-            windowHeight={windowHeight}
-          />
-      }
+      componentToRender = <MobileNavigationScreen />
     }
     // Layout for tablets and desktops
     else{

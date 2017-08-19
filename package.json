@@ -5,8 +5,10 @@
   "dependencies": {
     "material-ui": "^0.19.0",
     "material-ui-fullscreen-dialog": "^0.5.0",
+    "moment": "^2.18.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "react-navigation-controller": "^3.1.0",
     "react-numeric-input": "^2.1.0",
     "react-redux": "^5.0.5",
     "react-responsive-carousel": "^3.1.24",

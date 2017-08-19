@@ -5,13 +5,6 @@ import { connect } from 'react-redux';
 
 import Slider from 'react-slick'
 
-const styles = {
-
-  carouselSlide:{
-    height: '25.5vh'
-  }
-}
-
 const carouselSettings = {
     dots: true,
     arrows: true,
@@ -25,7 +18,8 @@ export default class CurrencyCarousel extends Component {
 
   render() {
     const {
-      slides
+      slides,
+      slideHeight
     } = this.props;
 
     return (
@@ -36,7 +30,9 @@ export default class CurrencyCarousel extends Component {
           return(
             <div 
               key={index}
-              style={styles.carouselSlide}
+              style={{
+                height:slideHeight
+              }}
             >
               {slide}
             </div>
@@ -48,6 +44,7 @@ export default class CurrencyCarousel extends Component {
 }
 
 CurrencyCarousel.propTypes = {
-  slideHeight: PropTypes.number.isRequired,
-  slides: PropTypes.array.isRequired
+  slideHeight: PropTypes.string.isRequired,
+  slides: PropTypes.array.isRequired,
+  slideDidChange: PropTypes.func.isRequired
 };

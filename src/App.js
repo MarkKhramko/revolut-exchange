@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import * as CurrencyRateActions from './actions/currencyRate';
+import * as CurrencyRateActions from './actions/currencyRateActions';
 import * as APIConstants from './constants/ThirdPartyAPI';
 
 import { MuiThemeProvider } from 'material-ui/styles';

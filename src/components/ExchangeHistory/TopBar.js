@@ -32,7 +32,6 @@ export default class TopBar extends Component {
         <BackgroundBubbles
           shouldFitWidth={ true }
         />
-
         <ExchangeButton
           onTouchTap={ exchangeButtonDidPress }
         />

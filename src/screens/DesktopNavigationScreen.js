@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import NavigationController from 'react-navigation-controller';
+
 import * as Tabs from '../constants/Tabs';
 
 import ExchangeScreen from './ExchangeScreen';
@@ -25,6 +27,7 @@ const styles = {
   },
 
   splitScreenContainer:{
+    height: '100%'
   },
 }
 
@@ -77,12 +80,24 @@ class DesktopNavigationScreen extends Component {
       width: rightSplitContainerWidth
     }
 
+    const navigationControlelrProps = {
+      // The views to place in the stack. The front-to-back order
+      // of the views in this array represents the new bottom-to-top
+      // order of the navigation stack. Thus, the last item added to
+      // the array becomes the top item of the navigation stack.
+      // NOTE: This can only be updated via `setViews()`
+      views: [
+        <ExchangeScreen />
+      ],
+      preserveState: true,
+      transitionTension: 12
+    };
+
     return (
     	<div style={ styles.screenContainer }>
         <div style={ leftSplitScreenContainerStyle }>
-          <ExchangeScreen 
-            windowWidth={leftSplitContainerWidth}
-            windowHeight={windowHeight}
+          <NavigationController 
+            {...navigationControlelrProps}
           />
         </div>
         <div style={ rightSplitScreenContainerStyle }>

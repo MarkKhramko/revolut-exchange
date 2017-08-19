@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import * as UserAccountActions from '../actions/userAccountActions';
+import * as ExchangeHistoryActions from '../actions/exchangeHistoryActions';
+
 import {Currencies} from '../constants/Currencies';
 
 import BackgroundBubbles from '../components/BackgroundBubbles';
@@ -67,9 +70,9 @@ class ExchangeScreen extends Component {
   }
 
 	componentWillMount(){
-    Currencies.forEach((currency, index)=>{
-      console.log(index, currency);
-    })
+    // Currencies.forEach((currency, index)=>{
+    //   console.log(index, currency);
+    // })
 	}
 
   componentDidMount() {
@@ -88,15 +91,23 @@ class ExchangeScreen extends Component {
 
   // #section-begin Interactions
   _handleCancelButtonAction(){
-
+    const{ navigationController }=this.props;
+    navigationController.popView();
   }
 
   _handleRateButtonDidPress(){
-    this._openRatesModal();
+    // this._openRatesModal();
+    const{ navigationController }=this.props;
+    navigationController.pushView(
+      <ExchangeScreen/>,
+      {
+        transition: 5
+      }
+    )
   }
 
   _handleExchangeButtonAction(){
-
+    let fromCurrency, toCurrency, amount;
   }
   // #section-end Interactions
 
@@ -105,15 +116,43 @@ class ExchangeScreen extends Component {
     console.log('did change', amount);
   }
 
-  _renderTopCarouselSlide(currencyData){
+  _renderTopCarouselSlide(currencyData, currencyAmount){
     let slider = 
       <TopCurrencyCarouselSlide 
         currencyData={ currencyData }
+        currencyAmount={ currencyAmount }
         exchangeAmountDidChange={
           (amount, currencyData)=>this._topSlideExchangeAmountDidChange(amount, currencyData)
         }
       />;
     return slider;
+  }
+
+  _renderTopCarouselSlides(){
+
+    const{ userAccount }=this.props;
+
+    let currencies = [
+      Currencies[48], // USD
+      Currencies[4], // GBP
+      Currencies[13] // EUR
+    ];
+
+    let amounts = [
+      userAccount.amount[currencies[0].Code],
+      userAccount.amount[currencies[1].Code],
+      userAccount.amount[currencies[2].Code]
+    ];
+
+    let slides = [];
+    for(let i=0; i<3; i++){
+      let slide = this._renderTopCarouselSlide(
+                    currencies[i],
+                    amounts[i]
+                  );
+      slides.push(slide);
+    }
+    return slides;
   }
 
   _renderBottomCarouselSlide(currencyData){
@@ -128,26 +167,10 @@ class ExchangeScreen extends Component {
   render() {
 
     const {
-      windowWidth,
-      windowHeight
-    } = this.props;
-
-    const {
       isRateModalOpen
     } = this.state;
 
-    // console.log(this.props.currencyRate);
-
-    let componentToRender;
-    if(this.state.windowWidth <= 768){
-
-    }
-
-    let topSlides = [
-      this._renderTopCarouselSlide(Currencies[48]),
-      this._renderTopCarouselSlide(Currencies[4]),
-      this._renderTopCarouselSlide(Currencies[13])
-    ];
+    let topSlides = this._renderTopCarouselSlides();
 
     let bottomSlides = [
       this._renderBottomCarouselSlide(Currencies[4]),
@@ -160,9 +183,9 @@ class ExchangeScreen extends Component {
         <BackgroundBubbles />
         <div style={styles.topBarContainer}>
           <TopBar
-            cancelButtonDidPress={()=>{}}
+            cancelButtonDidPress={()=>this._handleCancelButtonAction()}
             rateButtonDidPress={()=>this._handleRateButtonDidPress()}
-            exchangeButtonDidPress={()=>{}}
+            exchangeButtonDidPress={()=>this._handleExchangeButtonAction()}
           />
         </div>
         <div style={ styles.topCarouselContainer }>
@@ -172,10 +195,7 @@ class ExchangeScreen extends Component {
           />
         </div>
         <div style={ styles.darkenedAreaContainer }>
-          <DarkenedArea 
-            width={windowWidth}
-            height={windowHeight/2}
-          />
+          <DarkenedArea />
           <div style={ styles.bottomCarouselContainer }>
             <CurrencyCarousel 
               slides={ bottomSlides }
@@ -197,17 +217,22 @@ class ExchangeScreen extends Component {
   }
 }
 
-ExchangeScreen.propTypes = {
-  windowWidth: PropTypes.number.isRequired,
-  windowHeight: PropTypes.number.isRequired
-};
-
 function mapStateToProps(state) {
   return {
-    currencyRate: state.currencyRate
+    currencyRate: state.currencyRate,
+    userAccount: state.userAccount,
+    exchangeHistory: state.exchangeHistory
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    userAccountActions: bindActionCreators(UserAccountActions, dispatch),
+    exchangeHistoryActions: bindActionCreators(ExchangeHistoryActions, dispatch)
   };
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(ExchangeScreen);

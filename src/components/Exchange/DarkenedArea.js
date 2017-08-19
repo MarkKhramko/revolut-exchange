@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
 import { PathLine } from 'react-svg-pathline'
 
 const styles = {
@@ -8,6 +7,11 @@ const styles = {
     top: 0,
     left: 0,
     right: 0,
+    width: '100%',
+    height: '100%'
+  },
+
+  svg:{
     width: '100%',
     height: '100%'
   }
@@ -20,11 +24,34 @@ const arrowSize = {
 
 export default class DarkenedArea extends Component {
 
+  constructor(props){
+    super(props);
+
+    this.state = {
+      width: 0,
+      height: 0
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener("resize", this._updateDimensions.bind(this));
+    this._updateDimensions();
+  }
+
+  _updateDimensions(){
+    if(this.refs.container){
+      let width = this.refs.container.offsetWidth;
+      let height = this.refs.container.offsetWidth;
+      this.setState({ width, height });
+    }
+  }
+
   render() {
+
     const{
       width,
       height
-    } = this.props;
+    } = this.state;
 
     let linePoints = [
       {x:0, y:0},
@@ -38,7 +65,12 @@ export default class DarkenedArea extends Component {
     ];
 
     return (
-      <svg style={styles.componentContainer}>
+      <div
+        ref="container"
+        style={styles.componentContainer}
+      >
+        <svg
+        style={styles.svg}>
         <PathLine 
           points={linePoints} 
           stroke="none" 
@@ -47,11 +79,7 @@ export default class DarkenedArea extends Component {
           r={0}
         />
       </svg>
+      </div>
     );
   }
 }
-
-DarkenedArea.propTypes = {
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired
-};
