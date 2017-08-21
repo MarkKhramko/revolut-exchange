@@ -35,8 +35,8 @@ class App extends Component {
 
   _fetchExchangeRate(){
     const { currencyRateActions } = this.props;
-    currencyRateActions.setTimestamp(Math.random());
-    currencyRateActions.setRates([Math.random()]);
+    // currencyRateActions.setTimestamp(Math.random());
+    // currencyRateActions.setRates([Math.random()]);
   }
 
   // #section-begin Networking

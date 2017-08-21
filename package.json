@@ -7,6 +7,7 @@
     "material-ui-fullscreen-dialog": "^0.5.0",
     "moment": "^2.18.1",
     "react": "^15.6.1",
+    "react-addons-css-transition-group": "^15.6.0",
     "react-dom": "^15.6.1",
     "react-navigation-controller": "^3.1.0",
     "react-numeric-input": "^2.1.0",

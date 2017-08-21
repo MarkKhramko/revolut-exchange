@@ -7,6 +7,8 @@ import {ListItem} from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import IconAutorenew from 'material-ui/svg-icons/action/autorenew';
 
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
 const styles = {
 
   splitTextContainer:{
@@ -62,7 +64,7 @@ export default class TransactionListItem extends Component {
     let recievedAmountText = 
       "+ " + 
       transaction.to.Symbol +
-      transaction.recievedAmount
+      transaction.recievedAmount.toFixed(2);
 
     let primaryTextComponent = 
       <div style={styles.splitTextContainer}>
@@ -85,11 +87,17 @@ export default class TransactionListItem extends Component {
       </div>;
 
     return (
-      <ListItem
-          leftAvatar={<Avatar icon={<IconAutorenew />} />}
-          primaryText={primaryTextComponent}
-          secondaryText={secondaryTextComponent}
-      />
+      <ReactCSSTransitionGroup
+          transitionName="example"
+          transitionEnterTimeout={300}
+          transitionLeaveTimeout={300}
+        >
+        <ListItem
+            leftAvatar={<Avatar icon={<IconAutorenew />} />}
+            primaryText={primaryTextComponent}
+            secondaryText={secondaryTextComponent}
+        />
+      </ReactCSSTransitionGroup>
     );
   }
 }

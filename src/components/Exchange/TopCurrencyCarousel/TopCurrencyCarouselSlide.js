@@ -36,7 +36,7 @@ const styles = {
     color: 'white'
   },
 
-  yourAmountHeader:{
+  userAmountText:{
     float: 'left',
     width: '100%',
     fontSize: 12,
@@ -49,7 +49,6 @@ const styles = {
     width: '100%',
     padding: 2,
     color: 'white',
-    fontSize: 28,
     letterSpacing: '0.04em',
     border: 0,
     outline: 'none',
@@ -57,30 +56,64 @@ const styles = {
   }
 }
 
-export default class BottomCurrencyCarouselSlide extends Component {
+const defaultInputFontSize = styles.currencyCode.fontSize;
+
+export default class TopCurrencyCarouselSlide extends Component {
 
   constructor(props){
     super(props);
 
     this.state = {
-      amountInputValue: ""
+      amountInputValue: "",
+      inputFontSize: defaultInputFontSize
     }
+
+    // References, that will be set after first render call
+    this.amountInput;
   }
 
-  _handleTopRowClick(){
+  // #section-begin Public methods
+  focusInput(){
     this.amountInput.focus();
   }
+
+  getExchangeAmount(){
+
+    const{amountInputValue} = this.state;
+
+    // Becouse we always have minus in front of the number,
+    // we should remove it to procceed with number
+    let valueWithoutMinus = amountInputValue.replace(/-/g, "");
+
+    // Replace all commas to dots and convert string to number
+    let amount = Number(valueWithoutMinus.replace(/,/g, "."));
+    console.log(amount);
+    return amount;
+  }
+
+  getCurrencyData(){
+    const{
+      currencyData
+    } = this.props;
+    return currencyData;
+  }
+  // #section-end Public methods
 
   // #section-begin input validation
   _validateInput(value){
 
-    // Accept only strings that have 
-    // <numbers> <dot or comma> <numbers>
-    let pattern = /^[0-9]*([,.][0-9]*)?$/;
+    // Accept only strings, which are like 
+    // <digits><dot or comma><up to 2 digits>
+    let pattern = /^[0-9]*([,.][0-9]{0,2})?$/;
     
     return pattern.test(value);
   }
   // #section-end input validation
+
+  // #section-begin Interactions
+  _handleTopRowClick(){
+    this.amountInput.focus();
+  }
 
   _handleAmountInputValueChange(newValue){
 
@@ -92,21 +125,23 @@ export default class BottomCurrencyCarouselSlide extends Component {
     if(valueWithoutMinus.length < 1){
       let amountInputValue = "";
       this.setState({ amountInputValue });
-      this._notifyAboutExchangeAmountChange("0");
-      return;
     }
-    
     // If string passed validation, set it with minus in front
-    if(this._validateInput(valueWithoutMinus)){
+    else if(this._validateInput(valueWithoutMinus)){
       let amountInputValue = "-" + valueWithoutMinus;
       this.setState({ amountInputValue });
-      this._notifyAboutExchangeAmountChange(valueWithoutMinus);
     }
+    this._notifyAboutExchangeAmountChange(valueWithoutMinus);
+  }
+  // #section-end Interactions
+
+  _fitFontSizeInAmountInput(amountLength, windowWidth){
+
   }
 
   _notifyAboutExchangeAmountChange(amountInputvalue){
 
-    const {
+    const{
       exchangeAmountDidChange,
       currencyData 
     } = this.props;
@@ -118,11 +153,13 @@ export default class BottomCurrencyCarouselSlide extends Component {
 
   render() {
     const {
-      currencyData
+      currencyData,
+      currencyAmount
     } = this.props;
 
     const {
-      amountInputValue
+      amountInputValue,
+      inputFontSize
     } = this.state;
 
     return (
@@ -134,8 +171,8 @@ export default class BottomCurrencyCarouselSlide extends Component {
             <div style={ styles.currencyCode }>
               { currencyData.Code }
             </div>
-            <div style={ styles.yourAmountHeader }>
-              You have $1056.4
+            <div style={ styles.userAmountText }>
+              {'You have ' + currencyData.Symbol + currencyAmount.toFixed(2)}
             </div>
           </div>
           <div style={ styles.rightBlock }>
@@ -144,7 +181,10 @@ export default class BottomCurrencyCarouselSlide extends Component {
               type="text"
               value={ amountInputValue }
               onChange={ (event)=>this._handleAmountInputValueChange(event.target.value) }
-              style={ styles.numericInput }
+              style={{
+                ...styles.numericInput,
+                fontSize:inputFontSize
+              }}
             />
           </div>
         </div>
@@ -153,6 +193,9 @@ export default class BottomCurrencyCarouselSlide extends Component {
   }
 }
 
-BottomCurrencyCarouselSlide.propTypes = {
-  currencyData: PropTypes.object.isRequired
+TopCurrencyCarouselSlide.propTypes = {
+  currencyData: PropTypes.object.isRequired,
+  currencyAmount: PropTypes.number.isRequired,
+
+  exchangeAmountDidChange: PropTypes.func.isRequired
 };

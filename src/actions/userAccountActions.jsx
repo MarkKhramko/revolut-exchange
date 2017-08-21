@@ -1,9 +1,9 @@
-import * as types from '../constants/CurrencyRateActions';
+import * as types from '../constants/UserAccountActions';
 
-export function setTimestamp(timestamp) {
-  return { type: types.SET_TIMESTAMP, timestamp };
+export function addAmount(amount, currencyCode) {
+  return { type: types.ADD_AMOUNT, amount, currencyCode };
 }
 
-export function setRates(rates) {
-  return { type: types.SET_RATES, rates };
+export function reduceAmount(amount, currencyCode) {
+  return { type: types.REDUCE_AMOUNT, amount, currencyCode };
 }

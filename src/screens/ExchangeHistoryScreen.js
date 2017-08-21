@@ -21,6 +21,7 @@ const styles = {
 
   listContainer:{
     width: '100%',
+    height: '100%',
     overflow: 'scroll',
   }
 }
@@ -39,19 +40,17 @@ class ExchangeHistoryScreen extends Component {
     navigationController.pushView(<ExchangeScreen/>)
   }
 
-  _renderListItems(){
-    const{ exchangeHistory }=this.props;
+  _renderListItems(transactions){
 
     let listItems = [];
-    exchangeHistory.transactions.forEach((transaction, index)=>{
+    transactions.forEach((transaction, index)=>{
 
       listItems.push(
-        <TransactionListItem 
-          key={ index }
-          transaction={ transaction }
-        />
+          <TransactionListItem 
+            key={ index }
+            transaction={ transaction }
+          />
       );
-      console.log(transaction);
     })
 
     return listItems;
@@ -61,8 +60,8 @@ class ExchangeHistoryScreen extends Component {
 
     const {
       shouldShowTopBar,
-
-      exchangeButtonDidPress
+      exchangeButtonDidPress,
+      exchangeHistory
     } = this.props;
 
     let topBar = <div></div>;
@@ -75,7 +74,7 @@ class ExchangeHistoryScreen extends Component {
         {topBar}
         <div style={ styles.listContainer }>
           <List>
-            {this._renderListItems()}
+            {this._renderListItems(exchangeHistory.transactions)}
           </List>
         </div>
       </div>

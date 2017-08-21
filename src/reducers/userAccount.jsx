@@ -5,9 +5,9 @@ import {
 
 const initialState = {
 	amount:{
-    GBP: 10001,
-    USD: 10002,
-    EUR: 10003
+    GBP: 1001,
+    USD: 1002,
+    EUR: 1003
   }
 };
 
@@ -15,16 +15,22 @@ export default function userAccount(state = initialState, action) {
 
   switch (action.type) {
     case ADD_AMOUNT:{
-      let newAmount = state.amount;
+      console.log(action);
+      let newAmount = {...state.amount};
       let currencyAmount = newAmount[action.currencyCode];
       newAmount[action.currencyCode] = currencyAmount + action.amount;
-      return newAmount;
+      return {
+        amount: newAmount
+      };
     }
   	case REDUCE_AMOUNT:{
-      let newAmount = state.amount;
+      console.log(action);
+      let newAmount = {...state.amount};
       let currencyAmount = newAmount[action.currencyCode];
       newAmount[action.currencyCode] = currencyAmount - action.amount;
-      return newAmount;
+      return {
+        amount: newAmount
+      };
     }
     default:
       return state;
