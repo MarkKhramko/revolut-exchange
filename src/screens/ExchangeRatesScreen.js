@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import {Currencies} from '../constants/Currencies';
-
 import BackgroundBubbles from '../components/BackgroundBubbles';
 import {List, ListItem} from 'material-ui/List';
+import FlatButton from 'material-ui/FlatButton';
 
+import FullscreenDialog from 'material-ui-fullscreen-dialog'
+import Dialog from 'material-ui/Dialog';
+import CurrencyPairScreen from './CurrencyPairScreen';
 
 const styles = {
   screenContainer:{
@@ -16,6 +18,12 @@ const styles = {
     left: 0,
     width: '100%',
     height: '100%',
+  },
+
+  dialogTopBar:{
+    backgroundColor: '##0251A9',
+    fontSize: 19,
+    letterSpacing: '0.02em'
   },
 
   listContainer:{
@@ -31,6 +39,18 @@ const styles = {
     borderBottom: 'solid',
     borderWidth: 0.5,
     borderColor: 'rgba(255, 255, 255, 0.25)'
+  },
+
+  button: {
+    borderRadius: 5,
+    padding: 0
+  },
+
+  buttonLabel:{
+    color: 'white',
+    fontSize: '0.75em',
+    letterSpacing: '0.05em',
+    padding: 2
   }
 }
 
@@ -40,70 +60,89 @@ class ExchangeRatesScreen extends Component {
     super(props);
 
     this.state = {
-      enabledCurrencies:this._initEnabledCurrencies()
+      isCurrencyPairDialogOpen: false,
+      dialogTitle: "Select Currency 1"
     }
   }
 
-  _initEnabledCurrencies(){
-    let enabledCurrencies = [];
-    Currencies.forEach((currency)=>{
-      enabledCurrencies.push(true);
-    });
-    return enabledCurrencies;
+  _handelAddNewCurrencyButtonAction(){
+    let isCurrencyPairDialogOpen = true;
+    this.setState({ isCurrencyPairDialogOpen });
+  }
+
+  _handleCurrencyPairCloseRequest(){
+    let isCurrencyPairDialogOpen = false;
+    this.setState({ isCurrencyPairDialogOpen });
   }
 
   _handleListClick(currency, index){
-    let { enabledCurrencies } = this.state;
-    enabledCurrencies[index] = false;
-    this.setState({ enabledCurrencies });
-
-    console.log(enabledCurrencies);
-
-    const { didChooseCurrency } = this.props;
-    if(didChooseCurrency){
-      didChooseCurrency(currency);
-    }
-  }
-
-  _renderCurrenciesArray(){
-    const{
-      enabledCurrencies
-    } = this.state;
-
-    let resultArray = [];
-    Currencies.forEach((currency, index)=>{
-      let text = currency.Code + ' - ' + currency.Description;
-      resultArray.push(
-        <ListItem 
-          key={currency.Code} 
-          primaryText={text}
-          innerDivStyle={ styles.listItem }
-          hoverColor='rgba(255, 255, 255, 0.15)'
-          disabled={!enabledCurrencies[index]}
-          onClick={()=>this._handleListClick(currency, index)}
-        />
-      )
-    });
-    return resultArray;
   }
 
   render() {
+    const{
+      isCurrencyPairDialogOpen,
+      dialogTitle
+    } = this.state;
+
+    const{
+      isMobileView
+    }=this.props;
+
+    let currencyPairDialog;
+    if(isMobileView){
+      currencyPairDialog = 
+      <FullscreenDialog
+          open={ isCurrencyPairDialogOpen }
+          title={ dialogTitle }
+          appBarStyle={ styles.dialogTopBar }
+        >
+          <CurrencyPairScreen 
+            didChooseCurrency={()=>{}}
+          />
+      </FullscreenDialog>;
+    }
+    else{
+      currencyPairDialog =
+      <Dialog
+          title={ dialogTitle }
+          modal={false}
+          open={ isCurrencyPairDialogOpen }
+          autoScrollBodyContent={true}
+          appBarStyle={ styles.dialogTopBar }
+          onRequestClose={()=>this._handleCurrencyPairCloseRequest()}
+        >
+          <CurrencyPairScreen 
+            didChooseCurrency={()=>{}}
+          />
+      </Dialog>;
+    }
 
     return (
       <div style={ styles.screenContainer }>
         <BackgroundBubbles />
-        <div style={ styles.listContainer }>
-          <List>
-            {this._renderCurrenciesArray()}
-          </List>
-        </div>
+        {currencyPairDialog}
+        <List>
+          
+        </List>
+        <FlatButton
+            label="ADD NEW CURRENCY"
+            onTouchTap={()=>this._handelAddNewCurrencyButtonAction()}
+            hoverColor="#0D55A5"
+            labelStyle={ styles.buttonLabel }
+            style={styles.button}
+          />
       </div>
     );
   }
 }
 
 ExchangeRatesScreen.propTypes = {
-  didChooseCurrency: PropTypes.func.isRequired
+  cancelButtonDidPress: PropTypes.func.isRequired,
+  isMobileView: PropTypes.bool.isRequired
+};
+
+ExchangeRatesScreen.defaultPropTypes = {
+  isMobileView: true
 };
 
 function mapStateToProps(state) {

@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import NavigationController from 'react-navigation-controller';
-
-import * as Tabs from '../constants/Tabs';
+import NavigationStack from '../components/NavigationStack';
 
 import ExchangeScreen from './ExchangeScreen';
 import ExchangeHistoryScreen from './ExchangeHistoryScreen';
@@ -27,8 +25,7 @@ const styles = {
   },
 
   splitScreenContainer:{
-    height: '100%',
-    overflow: 'hidden'
+    height: '100%'
   },
 }
 
@@ -41,6 +38,8 @@ class DesktopNavigationScreen extends Component {
       windowWidth: 0,
       windowHeight: 0
     }
+
+    this.updateDimensions = this._updateDimensions.bind(this);
   }
 
   _updateDimensions() {
@@ -54,7 +53,11 @@ class DesktopNavigationScreen extends Component {
 	}
 
   componentDidMount() {
-    window.addEventListener("resize", this._updateDimensions.bind(this));
+    window.addEventListener("resize", this.updateDimensions);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions);
   }
 
   // #section-begin Interactions
@@ -68,37 +71,32 @@ class DesktopNavigationScreen extends Component {
       windowHeight
     } = this.props;
 
-    let rightSplitContainerWidth = 300;
-    let leftSplitContainerWidth = windowWidth - 300;
+    let rightSplitContainerWidth = 320;
+    let leftSplitContainerWidth = windowWidth - rightSplitContainerWidth;
 
     let leftSplitScreenContainerStyle = {
       ...styles.splitScreenContainer,
-      width: leftSplitContainerWidth
+      width: leftSplitContainerWidth,
+      overflow: 'hidden'
     }
 
     let rightSplitScreenContainerStyle = {
       ...styles.splitScreenContainer,
-      width: rightSplitContainerWidth
+      width: rightSplitContainerWidth,
+      overflow: 'scroll'
     }
 
-    const navigationControlelrProps = {
-      // The views to place in the stack. The front-to-back order
-      // of the views in this array represents the new bottom-to-top
-      // order of the navigation stack. Thus, the last item added to
-      // the array becomes the top item of the navigation stack.
-      // NOTE: This can only be updated via `setViews()`
-      views: [
-        <ExchangeScreen />
-      ],
-      preserveState: true,
-      transitionTension: 12
+    const navigationStackProps = {
+      components: [
+        <ExchangeScreen isMobileView={false}/>
+      ]
     };
 
     return (
     	<div style={ styles.screenContainer }>
         <div style={ leftSplitScreenContainerStyle }>
-          <NavigationController 
-            {...navigationControlelrProps}
+          <NavigationStack
+            {...navigationStackProps}
           />
         </div>
         <div style={ rightSplitScreenContainerStyle }>

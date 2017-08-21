@@ -1,10 +1,9 @@
+import uuidv4 from 'uuid/v4';
 import { 
 	ADD_TRANSACTION
 } from '../constants/ExchangeHistoryActions';
 
 import {Currencies} from '../constants/Currencies';
-
-import uuidv4 from 'uuid/v4';
 
 const initialState = {
   transactions:[

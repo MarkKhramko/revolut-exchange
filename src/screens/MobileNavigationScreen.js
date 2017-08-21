@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import * as Tabs from '../constants/Tabs';
-
 import NavigationStack from '../components/NavigationStack';
 import ExchangeHistoryScreen from './ExchangeHistoryScreen';
 
@@ -95,10 +93,10 @@ class MobileNavigationScreen extends Component {
 
     this.state = {
       windowWidth: 0,
-      windowHeight: 0,
-
-      currentTab: Tabs.EXCHANGE_TAB
+      windowHeight: 0
     }
+
+    this.updateDimensions = this._updateDimensions.bind(this);
   }
 
   _updateDimensions() {
@@ -112,15 +110,12 @@ class MobileNavigationScreen extends Component {
 	}
 
   componentDidMount() {
-    window.addEventListener("resize", this._updateDimensions.bind(this));
+    window.addEventListener("resize", this.updateDimensions);
   }
 
-  // #section-begin Interactions
-  _exchangeButtonDidPress(){
-    let currentTab = Tabs.EXCHANGE_TAB;
-    this.setState({ currentTab });
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions);
   }
-  // #section-end Interactions
 
   render() {
 
@@ -128,16 +123,9 @@ class MobileNavigationScreen extends Component {
     const {
       windowWidth,
       windowHeight,
-
-      currentTab
     } = this.state;
 
-    const navigationControllerProps = {
-      // The views to place in the stack. The front-to-back order
-      // of the views in this array represents the new bottom-to-top
-      // order of the navigation stack. Thus, the last item added to
-      // the array becomes the top item of the navigation stack.
-      // NOTE: This can only be updated via `setViews()`
+    const navigationStackProps = {
       components: [
         <ExchangeHistoryScreen 
           shouldShowTopBar={true}
@@ -148,7 +136,7 @@ class MobileNavigationScreen extends Component {
     return (
     	<div style={ styles.screenContainer }>
         <NavigationStack 
-            {...navigationControllerProps}
+            {...navigationStackProps}
           />
       </div>
     );

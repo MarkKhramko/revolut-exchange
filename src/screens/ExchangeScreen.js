@@ -15,7 +15,6 @@ import DarkenedArea from '../components/Exchange/DarkenedArea';
 import TopCurrencyCarousel from '../components/Exchange/TopCurrencyCarousel';
 import BottomCurrencyCarousel from '../components/Exchange/BottomCurrencyCarousel';
 
-import FullscreenDialog from 'material-ui-fullscreen-dialog'
 import ExchangeRatesScreen from './ExchangeRatesScreen';
 
 const styles = {
@@ -49,12 +48,6 @@ const styles = {
     right: 0,
     bottom: 0,
     height: '50%'
-  },
-
-  dialogTopBar:{
-    backgroundColor: '##0251A9',
-    fontSize: 19,
-    letterSpacing: '0.02em'
   }
 }
 
@@ -64,7 +57,6 @@ class ExchangeScreen extends Component {
     super(props);
 
     this.state = {
-      isRateModalOpen: false,
       topCarouselAmount: 0,
       topCarouselCurrency: Currencies[48], // USD
       bottomCarouselCurrency: Currencies[4]
@@ -76,17 +68,7 @@ class ExchangeScreen extends Component {
   }
 
   componentDidMount() {
-
-  }
-
-  _openRatesModal(){
-    let isRateModalOpen = true;
-    this.setState({ isRateModalOpen });
-  }
-
-  _closeRatesModal(){
-    let isRateModalOpen = false;
-    this.setState({ isRateModalOpen });
+    this._openRatesScreen();
   }
 
   // #section-begin Exchange Operations
@@ -144,21 +126,30 @@ class ExchangeScreen extends Component {
   }
   // #section-end Exchange Operations
 
+  // #section-begin Navigation
+  _dismissThisScreen(){
+    const{ navigationStackController }=this.props;
+    navigationStackController.pop();
+  }
+
+  _openRatesScreen(){
+    const{ navigationStackController, isMobileView }=this.props;
+    navigationStackController.push(
+      <ExchangeRatesScreen
+        isMobileView={isMobileView}
+        cancelButtonDidPress={()=>{}}
+      />
+    );
+  }
+  // #section-end Navigation
+
   // #section-begin Interactions
   _handleCancelButtonAction(){
-    const{ navigationController }=this.props;
-    navigationController.popView();
+    this._dismissThisScreen();
   }
 
   _handleRateButtonDidPress(){
-    // this._openRatesModal();
-    const{ navigationController }=this.props;
-    navigationController.pushView(
-      <ExchangeScreen/>,
-      {
-        transition: 5
-      }
-    )
+    this._openRatesScreen();
   }
 
   _handleExchangeButtonAction(){
@@ -173,6 +164,14 @@ class ExchangeScreen extends Component {
       let receivedAmount = this._getReceivedAmountByLastCurrencyRate(fromCurrency, toCurrency, reducedAmount);
       this._changeUserAccountBalance(fromCurrency, toCurrency, reducedAmount, receivedAmount);
       this._addTransactionToHistory(fromCurrency, toCurrency, reducedAmount, receivedAmount);
+
+      const {
+        isMobileView
+      }=this.props;
+
+      if(isMobileView){
+        this._dismissThisScreen();
+      }
     }
   }
 
@@ -270,7 +269,8 @@ class ExchangeScreen extends Component {
 
     const {
       currencyRate,
-      userAccount
+      userAccount,
+      isMobileView
     }=this.props;
 
     let topSlidesData = this._getTopCarouselSlidesData();
@@ -283,6 +283,7 @@ class ExchangeScreen extends Component {
         <BackgroundBubbles />
         <div style={styles.topBarContainer}>
           <TopBar
+            shouldHideCancelButton={!isMobileView}
             cancelButtonDidPress={()=>this._handleCancelButtonAction()}
             rateButtonDidPress={()=>this._handleRateButtonDidPress()}
             exchangeButtonDidPress={()=>this._handleExchangeButtonAction()}
@@ -310,15 +311,6 @@ class ExchangeScreen extends Component {
             />
           </div>
         </div>
-        <FullscreenDialog
-          open={isRateModalOpen}
-          title="Select Currency 1"
-          appBarStyle={ styles.dialogTopBar }
-        >
-          <ExchangeRatesScreen 
-            didChooseCurrency={()=>{}}
-          />
-        </FullscreenDialog>
       </div>
     );
   }
@@ -328,7 +320,7 @@ function mapStateToProps(state) {
   return {
     currencyRate: state.currencyRate,
     userAccount: state.userAccount,
-    exchangeHistory: state.exchangeHistory
+    exchangeHistory: state.exchangeHistory,
   };
 }
 
@@ -337,6 +329,14 @@ function mapDispatchToProps(dispatch) {
     userAccountActions: bindActionCreators(UserAccountActions, dispatch),
     exchangeHistoryActions: bindActionCreators(ExchangeHistoryActions, dispatch)
   };
+}
+
+ExchangeScreen.props = {
+  isMobileView: PropTypes.bool.isRequired
+}
+
+ExchangeScreen.defaultProps ={
+  isMobileView: true
 }
 
 export default connect(

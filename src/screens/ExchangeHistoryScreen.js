@@ -16,8 +16,8 @@ const styles = {
     position: 'relative',
     top: 0,
     left: 0,
-    width: '100%',
-    height: '100%',
+    bottom: 0,
+    right: 0,
     backgroundColor: 'white'
   },
 
@@ -38,8 +38,8 @@ class ExchangeHistoryScreen extends Component {
   }
 
   _exchangeButtonDidPress(){
-    const{ navigationController }=this.props;
-    navigationController.pushView(<ExchangeScreen/>)
+    const{ navigationStackController }=this.props;
+    navigationStackController.push(<ExchangeScreen/>)
   }
 
   _renderListItems(transactions){
@@ -81,7 +81,7 @@ class ExchangeHistoryScreen extends Component {
                 transitionLeaveTimeout={300}
                 component="div"
               >
-              {this._renderListItems(exchangeHistory.transactions)}
+                {this._renderListItems(exchangeHistory.transactions)}
               </ReactCSSTransitionGroup>
             </List>
         </div>

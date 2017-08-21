@@ -6,12 +6,13 @@ import ExchangeButton from './ExchangeButton';
 
 const styles = {
   componentContainer:{
-    position: 'relative',
+    position: 'sticky',
     top: 0,
     left: 0,
     right: 0,
     height: 70,
     padding: 5,
+    zIndex: 100,
     
     display: 'flex',
     alignItems: 'center',
@@ -20,10 +21,6 @@ const styles = {
 }
 
 export default class TopBar extends Component {
-
-  _handleExchangeButtonAction(){
-  }
-
   render() {
     const { exchangeButtonDidPress } = this.props;
 
@@ -43,3 +40,5 @@ export default class TopBar extends Component {
 TopBar.propTypes = {
   exchangeButtonDidPress: PropTypes.func.isRequired
 };
+
+TopBar.HEIGHT = styles.componentContainer.height;

@@ -39,6 +39,7 @@ export default class TopBar extends Component {
 
   render() {
     const { 
+      shouldHideCancelButton,
       cancelButtonDidPress,
       rateButtonDidPress,
       exchangeButtonDidPress,
@@ -47,9 +48,10 @@ export default class TopBar extends Component {
       receivableCurrencyData
     } = this.props;
 
-    return (
-      <div style={ styles.componentContainer }>
-        <div style={ styles.buttonsContainer }>
+
+    let cancelButton;
+    if(!shouldHideCancelButton){
+      cancelButton = 
           <FlatButton 
             label="Cancel"
             onTouchTap={ cancelButtonDidPress }
@@ -57,6 +59,16 @@ export default class TopBar extends Component {
             labelStyle={ styles.buttonLabel }
             style={styles.button}
           />
+    }
+    else{
+      // Dummy left placeholder
+      cancelButton = <div style={{width: 88}}></div>
+    }
+
+    return (
+      <div style={ styles.componentContainer }>
+        <div style={ styles.buttonsContainer }>
+          {cancelButton}
           <RateButton
             buttonDidPress={rateButtonDidPress}
             exchangeRate={exchangeRate}
@@ -77,6 +89,7 @@ export default class TopBar extends Component {
 }
 
 TopBar.propTypes = {
+  shouldHideCancelButton: PropTypes.bool.isRequired,
   cancelButtonDidPress: PropTypes.func.isRequired,
   rateButtonDidPress: PropTypes.func.isRequired,
   exchangeButtonDidPress: PropTypes.func.isRequired,

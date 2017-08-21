@@ -65,8 +65,6 @@ export default class BottomCurrencyCarousel extends Component {
       let currencyAmount = slideData.currencyAmount;
       let receivedAmount = slideData.receivedAmount;
 
-      console.log('receivedAmount', receivedAmount);
-
       slides.push(
         <div 
           key={index}
