@@ -6,8 +6,6 @@ import { connect } from 'react-redux';
 import FlatButton from 'material-ui/FlatButton';
 import RateButton from './RateButton';
 
-import { Currencies } from '../../constants/Currencies';
-
 const styles = {
   componentContainer:{
     position: 'absolute',
@@ -43,7 +41,10 @@ export default class TopBar extends Component {
     const { 
       cancelButtonDidPress,
       rateButtonDidPress,
-      exchangeButtonDidPress 
+      exchangeButtonDidPress,
+      exchangeRate,
+      convertableCurrencyData,
+      receivableCurrencyData
     } = this.props;
 
     return (
@@ -58,8 +59,9 @@ export default class TopBar extends Component {
           />
           <RateButton
             buttonDidPress={rateButtonDidPress}
-            convertableCurrencyData={Currencies[0]}
-            receivableCurrencyData={Currencies[4]}
+            exchangeRate={exchangeRate}
+            convertableCurrencyData={convertableCurrencyData}
+            receivableCurrencyData={receivableCurrencyData}
           />
           <FlatButton
             label="Exchange"
@@ -77,7 +79,10 @@ export default class TopBar extends Component {
 TopBar.propTypes = {
   cancelButtonDidPress: PropTypes.func.isRequired,
   rateButtonDidPress: PropTypes.func.isRequired,
-  exchangeButtonDidPress: PropTypes.func.isRequired
+  exchangeButtonDidPress: PropTypes.func.isRequired,
+  exchangeRate: PropTypes.number.isRequired,
+  convertableCurrencyData: PropTypes.object.isRequired,
+  receivableCurrencyData: PropTypes.object.isRequired
 };
 
 TopBar.BAR_HEIGHT = styles.componentContainer.height + 4;

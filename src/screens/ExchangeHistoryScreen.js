@@ -46,7 +46,6 @@ class ExchangeHistoryScreen extends Component {
 
     let listItems = [];
     transactions.forEach((transaction)=>{
-
       listItems.push(
           <TransactionListItem 
             key={ transaction.id }

@@ -64,19 +64,16 @@ class ExchangeScreen extends Component {
     super(props);
 
     this.state = {
-      isRateModalOpen: false
+      isRateModalOpen: false,
+      topCarouselAmount: 0,
+      topCarouselCurrency: Currencies[48], // USD
+      bottomCarouselCurrency: Currencies[4]
     }
 
     // References, that will be set after first render call
     this.topCarousel;
     this.bottomCarousel;
   }
-
-	componentWillMount(){
-    // Currencies.forEach((currency, index)=>{
-    //   console.log(index, currency);
-    // })
-	}
 
   componentDidMount() {
 
@@ -178,6 +175,14 @@ class ExchangeScreen extends Component {
       this._addTransactionToHistory(fromCurrency, toCurrency, reducedAmount, receivedAmount);
     }
   }
+
+  _handleExchangeAmountDidChange(topCarouselCurrency, topCarouselAmount){
+    this.setState({ topCarouselAmount, topCarouselCurrency });
+  }
+
+  _handleSlideDidChange(topCarouselCurrency, topCarouselAmount){
+    this.setState({ topCarouselAmount, topCarouselCurrency });
+  }
   // #section-end Interactions
 
   // #section-begin Slides Data
@@ -210,9 +215,7 @@ class ExchangeScreen extends Component {
     return slidesData;
   }
 
-  _getBottomCarouselSlidesData(){
-    const{ userAccount }=this.props;
-
+  _getBottomCarouselSlidesData(topCarouselCurrency, topCarouselAmount, userAccount){
     let currencies = [
       Currencies[4], // GBP
       Currencies[13], // EUR
@@ -229,8 +232,9 @@ class ExchangeScreen extends Component {
     if(this.topCarousel){
 
       receivedAmounts = [];
-      let fromCurrency = this.topCarousel.getCurrencyData();
-      let reducedAmount = this.topCarousel.getExchangeAmount();
+      let fromCurrency = topCarouselCurrency;
+      let reducedAmount = topCarouselAmount;
+
       for(let i=0; i<3; i++){
         let toCurrency = currencies[i];
         receivedAmounts.push(this._getReceivedAmountByLastCurrencyRate(fromCurrency, toCurrency, reducedAmount));
@@ -258,11 +262,21 @@ class ExchangeScreen extends Component {
   render() {
 
     const {
-      isRateModalOpen
-    } = this.state;
+      isRateModalOpen,
+      topCarouselCurrency,
+      topCarouselAmount,
+      bottomCarouselCurrency
+    }=this.state;
+
+    const {
+      currencyRate,
+      userAccount
+    }=this.props;
 
     let topSlidesData = this._getTopCarouselSlidesData();
-    let bottomSlidesData = this._getBottomCarouselSlidesData();
+    let bottomSlidesData = this._getBottomCarouselSlidesData(topCarouselCurrency, topCarouselAmount, userAccount);
+
+    let currentExchangeRate = this._getReceivedAmountByLastCurrencyRate(topCarouselCurrency, bottomCarouselCurrency, 1);
 
     return (
     	<div style={ styles.screenContainer }>
@@ -272,6 +286,9 @@ class ExchangeScreen extends Component {
             cancelButtonDidPress={()=>this._handleCancelButtonAction()}
             rateButtonDidPress={()=>this._handleRateButtonDidPress()}
             exchangeButtonDidPress={()=>this._handleExchangeButtonAction()}
+            exchangeRate={currentExchangeRate}
+            convertableCurrencyData={topCarouselCurrency}
+            receivableCurrencyData={bottomCarouselCurrency}
           />
         </div>
         <div style={ styles.topCarouselContainer }>
@@ -279,6 +296,8 @@ class ExchangeScreen extends Component {
             ref={(ref)=>this.topCarousel = ref}
             slidesData={ topSlidesData }
             slideHeight='25.5vh'
+            exchangeAmountDidChange={(currencyData, amount)=>this._handleExchangeAmountDidChange(currencyData, amount)}
+            slideDidChange={(currencyData, amount)=>this._handleSlideDidChange(currencyData, amount)}
           />
         </div>
         <div style={ styles.darkenedAreaContainer }>

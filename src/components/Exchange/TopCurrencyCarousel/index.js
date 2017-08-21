@@ -50,18 +50,24 @@ export default class TopCurrencyCarousel extends Component {
   // #section-end Public methods
 
   _slideExchangeAmountDidChange(amount, currencyData){
-    console.log('did change', amount);
+    const{
+      exchangeAmountDidChange
+    } = this.props;
+
     let currentCurrencyData = currencyData;
     let currentExchangeAmount = amount;
     this.setState({
       currentCurrencyData,
       currentExchangeAmount
-    })
+    });
+
+    exchangeAmountDidChange(currencyData, amount);
   }
 
   _handleSliderAfterChange(slideIndex){
     const {
-      slidesData
+      slidesData,
+      slideDidChange
     } = this.props;
 
     let refIndex;
@@ -78,7 +84,9 @@ export default class TopCurrencyCarousel extends Component {
     let currentSlideIndex = slideIndex;
     let currentCurrencyData = slide.getCurrencyData();
     let currentExchangeAmount = slide.getExchangeAmount();
-    this.setState({ currentSlideIndex, currentCurrencyData, currentExchangeAmount })
+    this.setState({ currentSlideIndex, currentCurrencyData, currentExchangeAmount });
+
+    slideDidChange(currentCurrencyData, currentExchangeAmount)
   }
 
   _renderSlides(slidesData, slideHeight){
@@ -127,5 +135,7 @@ export default class TopCurrencyCarousel extends Component {
 
 TopCurrencyCarousel.propTypes = {
   slideHeight: PropTypes.string.isRequired,
-  slidesData: PropTypes.array.isRequired
+  slidesData: PropTypes.array.isRequired,
+  exchangeAmountDidChange: PropTypes.func.isRequired,
+  slideDidChange: PropTypes.func.isRequired
 };

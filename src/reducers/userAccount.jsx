@@ -15,7 +15,6 @@ export default function userAccount(state = initialState, action) {
 
   switch (action.type) {
     case ADD_AMOUNT:{
-      console.log(action);
       let newAmount = {...state.amount};
       let currencyAmount = newAmount[action.currencyCode];
       newAmount[action.currencyCode] = currencyAmount + action.amount;
@@ -24,7 +23,6 @@ export default function userAccount(state = initialState, action) {
       };
     }
   	case REDUCE_AMOUNT:{
-      console.log(action);
       let newAmount = {...state.amount};
       let currencyAmount = newAmount[action.currencyCode];
       newAmount[action.currencyCode] = currencyAmount - action.amount;

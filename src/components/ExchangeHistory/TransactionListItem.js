@@ -17,11 +17,11 @@ const styles = {
 
   primaryTextLeftBlock:{
     fontSize: 12,
-    paddingTop: 3
+    paddingTop: 2
   },
 
   primaryTextRightBlock:{
-    fontSize: 15
+    fontSize: 14
   },
 
   secondaryTextLeftBlock:{
@@ -45,8 +45,6 @@ export default class TransactionListItem extends Component {
     const{
       transaction
     } = this.props;
-
-    console.log(transaction);
 
     let transactionText = 
       "Exchanged from " + 

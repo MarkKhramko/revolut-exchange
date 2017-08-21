@@ -26,7 +26,8 @@ const styles = {
   buttonText:{
     display: 'inline',
     fontSize: 12,
-    padding: 5
+    padding: 5,
+    letterSpacing: '0.05em'
   },
 
   dropDownArrow:{
@@ -50,11 +51,16 @@ export default class RateButton extends Component {
     const{
       buttonDidPress,
       convertableCurrencyData,
-      receivableCurrencyData
+      receivableCurrencyData,
+      exchangeRate
     } = this.props;
 
     let convertableCurrencySymbol = convertableCurrencyData.Symbol;
     let receivableCurrencySymbol = receivableCurrencyData.Symbol;
+
+    let rateWithFourDigitsAfterPoint = exchangeRate.toFixed(4);
+    // Extract last two digits as string
+    let lastTwoDigits = rateWithFourDigitsAfterPoint.slice(-2);
 
     return (
       <button
@@ -76,10 +82,10 @@ export default class RateButton extends Component {
               { receivableCurrencySymbol }
             </span>
             <span style={ styles.bigFont }>
-              1.34
+              {exchangeRate.toFixed(2)}
             </span>
             <span style={ styles.smallFont }>
-              40
+              {lastTwoDigits}
             </span>
           </span>
           <IconArrowDropDown style={ styles.dropDownArrow }/>
@@ -92,5 +98,6 @@ export default class RateButton extends Component {
 RateButton.propTypes = {
   buttonDidPress: PropTypes.func.isRequired,
   convertableCurrencyData: PropTypes.object.isRequired,
-  receivableCurrencyData: PropTypes.object.isRequired
+  receivableCurrencyData: PropTypes.object.isRequired,
+  exchangeRate: PropTypes.number.isRequired,
 };

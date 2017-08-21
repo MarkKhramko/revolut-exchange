@@ -51,40 +51,6 @@ const initialState = {
       receivedAmount: 155.99,
       timestamp: new Date()
     },{
-      from: Currencies[48],
-      to: Currencies[4],
-      reducedAmount: 200,
-      receivedAmount: 155.99,
-      timestamp: new Date()
-    },{
-      id: uuidv4(),
-      from: Currencies[48],
-      to: Currencies[4],
-      reducedAmount: 200,
-      receivedAmount: 155.99,
-      timestamp: new Date()
-    },{
-      id: uuidv4(),
-      from: Currencies[48],
-      to: Currencies[4],
-      reducedAmount: 200,
-      receivedAmount: 155.99,
-      timestamp: new Date()
-    },{
-      id: uuidv4(),
-      from: Currencies[48],
-      to: Currencies[4],
-      reducedAmount: 200,
-      receivedAmount: 155.99,
-      timestamp: new Date()
-    },{
-      id: uuidv4(),
-      from: Currencies[48],
-      to: Currencies[4],
-      reducedAmount: 200,
-      receivedAmount: 155.99,
-      timestamp: new Date()
-    },{
       id: uuidv4(),
       from: Currencies[48],
       to: Currencies[4],
