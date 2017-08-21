@@ -7,17 +7,12 @@ import BackgroundBubbles from '../components/BackgroundBubbles';
 import {List, ListItem} from 'material-ui/List';
 import FlatButton from 'material-ui/FlatButton';
 
-import FullscreenDialog from 'material-ui-fullscreen-dialog'
 import Dialog from 'material-ui/Dialog';
 import CurrencyPairScreen from './CurrencyPairScreen';
 
 const styles = {
   screenContainer:{
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
+    height: '100vh',
   },
 
   dialogTopBar:{
@@ -65,9 +60,17 @@ class ExchangeRatesScreen extends Component {
     }
   }
 
+  _openCurrencyPairModal(){
+    const{ navigationStackController }=this.props;
+    navigationStackController.pushModal(
+      <CurrencyPairScreen 
+        didChooseCurrencyPair={(pair)=>{console.log(pair)}}
+      />
+    );
+  }
+
   _handelAddNewCurrencyButtonAction(){
-    let isCurrencyPairDialogOpen = true;
-    this.setState({ isCurrencyPairDialogOpen });
+    this._openCurrencyPairModal();
   }
 
   _handleCurrencyPairCloseRequest(){
@@ -85,42 +88,18 @@ class ExchangeRatesScreen extends Component {
     } = this.state;
 
     const{
-      isMobileView
+      isMobileView,
+      screenWidth
     }=this.props;
 
-    let currencyPairDialog;
-    if(isMobileView){
-      currencyPairDialog = 
-      <FullscreenDialog
-          open={ isCurrencyPairDialogOpen }
-          title={ dialogTitle }
-          appBarStyle={ styles.dialogTopBar }
-        >
-          <CurrencyPairScreen 
-            didChooseCurrency={()=>{}}
-          />
-      </FullscreenDialog>;
-    }
-    else{
-      currencyPairDialog =
-      <Dialog
-          title={ dialogTitle }
-          modal={false}
-          open={ isCurrencyPairDialogOpen }
-          autoScrollBodyContent={true}
-          appBarStyle={ styles.dialogTopBar }
-          onRequestClose={()=>this._handleCurrencyPairCloseRequest()}
-        >
-          <CurrencyPairScreen 
-            didChooseCurrency={()=>{}}
-          />
-      </Dialog>;
+    let screenContainerStyle = {
+      ...styles.screenContainer,
+      width: screenWidth
     }
 
     return (
-      <div style={ styles.screenContainer }>
+      <div style={ screenContainerStyle }>
         <BackgroundBubbles />
-        {currencyPairDialog}
         <List>
           
         </List>
@@ -138,7 +117,8 @@ class ExchangeRatesScreen extends Component {
 
 ExchangeRatesScreen.propTypes = {
   cancelButtonDidPress: PropTypes.func.isRequired,
-  isMobileView: PropTypes.bool.isRequired
+  isMobileView: PropTypes.bool.isRequired,
+  screenWidth: PropTypes.number.isRequired,
 };
 
 ExchangeRatesScreen.defaultPropTypes = {

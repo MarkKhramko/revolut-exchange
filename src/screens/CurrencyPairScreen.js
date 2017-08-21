@@ -6,22 +6,16 @@ import { connect } from 'react-redux';
 import {Currencies} from '../constants/Currencies';
 
 import BackgroundBubbles from '../components/BackgroundBubbles';
+import TopBar from '../components/CurrencyPair/TopBar';
 import {List, ListItem} from 'material-ui/List';
 import Checkbox from 'material-ui/Checkbox';
 
 const styles = {
   screenContainer:{
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
   },
 
   listContainer:{
-    marginTop: 65,
-    height: '100%',
-    overflow: 'scroll'
+    overflow: 'scroll',
   },
 
   listItem:{
@@ -48,7 +42,8 @@ class CurrencyPairScreen extends Component {
     super(props);
 
     this.state = {
-      checkedCurrencies:this._initCheckedCurrencies()
+      checkedCurrencies:this._initCheckedCurrencies(),
+      selectedCurrenciesCount: 0
     }
   }
 
@@ -60,19 +55,46 @@ class CurrencyPairScreen extends Component {
     return checkedCurrencies;
   }
 
+  // #section-begin Navigation
+  _dismissThisScreen(){
+    const{ navigationStackController }=this.props;
+    navigationStackController.popModal();
+  }
+  // #section-end Navigation
+
+  _didChooseCurrencyPair(checkedCurrencies){
+    const {
+      didChooseCurrencyPair
+    } = this.props;
+
+    let pair = [];
+    checkedCurrencies.forEach((currencyCheck, index)=>{
+      if(currencyCheck == true){
+        pair.push(Currencies[index]);
+      }
+    });
+
+    didChooseCurrencyPair(pair);
+    this._dismissThisScreen();
+  }
+
   _handleListClick(currency, index){
+    let{ 
+      checkedCurrencies, 
+      selectedCurrenciesCount 
+    } = this.state;
 
-    console.log(currency);
-
-    let { checkedCurrencies } = this.state;
     checkedCurrencies[index] = true;
-    this.setState({ checkedCurrencies });
+    selectedCurrenciesCount += 1;
 
-    console.log(checkedCurrencies);
+    this.setState({ 
+      checkedCurrencies, 
+      selectedCurrenciesCount 
+    });
 
-    const { didChooseCurrency } = this.props;
-    if(didChooseCurrency){
-      didChooseCurrency(currency);
+    // If pair was selected, call back
+    if(selectedCurrenciesCount > 1){
+      this._didChooseCurrencyPair(checkedCurrencies);
     }
   }
 
@@ -108,9 +130,28 @@ class CurrencyPairScreen extends Component {
 
   render() {
 
+    const{
+      selectedCurrenciesCount
+    }=this.state;
+
+    const{
+      screenWidth
+    }=this.props;
+
+    let topBarTitle = selectedCurrenciesCount > 0 ? 
+      "Select Currency 1" :
+      "Select Currency 2";
+
+    let screenContainerStyle = {
+      ...styles.screenContainer,
+      width: screenWidth
+    }
     return (
-      <div style={ styles.screenContainer }>
+      <div style={ screenContainerStyle }>
         <BackgroundBubbles />
+        <TopBar
+          title={ topBarTitle }
+        />
         <div style={ styles.listContainer }>
           <List>
             {this._renderCurrenciesArray()}
@@ -122,7 +163,8 @@ class CurrencyPairScreen extends Component {
 }
 
 CurrencyPairScreen.propTypes = {
-  didChooseCurrency: PropTypes.func.isRequired
+  didChooseCurrencyPair: PropTypes.func.isRequired,
+  screenWidth: PropTypes.number.isRequired,
 };
 
 function mapStateToProps(state) {

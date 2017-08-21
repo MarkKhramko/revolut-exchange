@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 
 import FlatButton from 'material-ui/FlatButton';
 import RateButton from './RateButton';

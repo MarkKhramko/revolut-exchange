@@ -19,11 +19,7 @@ import ExchangeRatesScreen from './ExchangeRatesScreen';
 
 const styles = {
   screenContainer:{
-    position: 'relative',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%'
+    height: '100vh'
   },
 
   topBarContainer:{
@@ -68,7 +64,7 @@ class ExchangeScreen extends Component {
   }
 
   componentDidMount() {
-    this._openRatesScreen();
+    // this._openRatesScreen();
   }
 
   // #section-begin Exchange Operations
@@ -270,7 +266,8 @@ class ExchangeScreen extends Component {
     const {
       currencyRate,
       userAccount,
-      isMobileView
+      isMobileView,
+      screenWidth
     }=this.props;
 
     let topSlidesData = this._getTopCarouselSlidesData();
@@ -278,8 +275,13 @@ class ExchangeScreen extends Component {
 
     let currentExchangeRate = this._getReceivedAmountByLastCurrencyRate(topCarouselCurrency, bottomCarouselCurrency, 1);
 
+    let screenContainerStyle = {
+      ...styles.screenContainer,
+      width: screenWidth
+    }
+
     return (
-    	<div style={ styles.screenContainer }>
+    	<div style={ screenContainerStyle }>
         <BackgroundBubbles />
         <div style={styles.topBarContainer}>
           <TopBar
@@ -332,7 +334,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 ExchangeScreen.props = {
-  isMobileView: PropTypes.bool.isRequired
+  isMobileView: PropTypes.bool.isRequired,
+  screenWidth: PropTypes.number.isRequired
 }
 
 ExchangeScreen.defaultProps ={

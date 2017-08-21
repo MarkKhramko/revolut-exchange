@@ -97,11 +97,13 @@ class DesktopNavigationScreen extends Component {
         <div style={ leftSplitScreenContainerStyle }>
           <NavigationStack
             {...navigationStackProps}
+            componentWidth={leftSplitContainerWidth}
+            componentHeight={windowHeight}
           />
         </div>
         <div style={ rightSplitScreenContainerStyle }>
           <ExchangeHistoryScreen 
-            windowWidth={ windowWidth }
+            screenWidth={ rightSplitContainerWidth }
             exchangeButtonDidPress={()=>this._exchangeButtonDidPress()}
           />
         </div>

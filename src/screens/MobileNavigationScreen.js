@@ -129,14 +129,16 @@ class MobileNavigationScreen extends Component {
       components: [
         <ExchangeHistoryScreen 
           shouldShowTopBar={true}
+          screenWidth={windowWidth}
         />
       ]
     };
-
     return (
     	<div style={ styles.screenContainer }>
         <NavigationStack 
             {...navigationStackProps}
+            componentWidth={windowWidth}
+            componentHeight={windowHeight}
           />
       </div>
     );

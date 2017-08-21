@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
-
 import uuidv4 from 'uuid/v4';
 
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import ReactTransitions from 'react-transitions';
+import * as TransitionConstants from './TransitionConstants';
 
 const styles = {
   componentContainer:{
-    width: '100%',
-    height: '100vh'
+    display: 'flex'
   }
 }
 
@@ -23,21 +22,40 @@ export default class NavigationStack extends Component {
     });
 
     this.state = {
-      components: componentsArray
+      components: componentsArray,
+      currentTransitionName: TransitionConstants.IN
     }
   }
 
-  pushComponent(component){
+  _pushComponent(component, transition){
     let components = this.state.components;
     let changedComponent = this._addNewPropsToComponent(component);
     components.push(changedComponent);
-    this.setState({components});
+    let currentTransitionName = transition;
+    this.setState({ components, currentTransitionName });
+  }
+
+  _popLastComponent(transition){
+    let components = this.state.components;
+    components.pop();
+    let currentTransitionName = transition;
+    this.setState({components, currentTransitionName});
+  }
+
+  pushComponent(component){
+    this._pushComponent(component, TransitionConstants.IN);
   }
 
   popLastComponent(){
-    let components = this.state.components;
-    components.pop();
-    this.setState({components});
+    this._popLastComponent(TransitionConstants.OUT);
+  }
+
+  pushModal(component){
+    this._pushComponent(component, TransitionConstants.MODAL_IN);
+  }
+
+  popModal(){
+    this._popLastComponent(TransitionConstants.MODAL_OUT);
   }
 
   _addNewPropsToComponent(component){
@@ -61,36 +79,50 @@ export default class NavigationStack extends Component {
       },
       pop:function(){
         stackRef.popLastComponent();
-      }
+      },
+      pushModal:function(component){
+        stackRef.pushModal(component);
+      },
+      popModal:function(){
+        stackRef.popModal();
+      },
     }
     return controller;
   }
 
   render() {
     const{
-      components
+      components,
+      currentTransitionName
     } = this.state;
 
-    let lastTwoComponents = [];
-    for(let i=components.length-1; (i < components.length-2 || i == 0); i--){
-      let component = components[i];
-      lastTwoComponents.push(component);
-    }
+    const{
+      componentWidth,
+      componentHeight
+    }= this.props;
+
+    let lastComponent = React.cloneElement(
+      components[components.length-1],
+      {
+        screenWidth: componentWidth
+      }
+    );
 
     return (
-      <ReactCSSTransitionGroup
-          transitionName="slide"
-          transitionEnterTimeout={300}
-          transitionLeaveTimeout={300}
-        >
-        <div style={ styles.componentContainer }>
-          { components[components.length-1] }
-        </div>
-      </ReactCSSTransitionGroup>
+      <ReactTransitions
+        transition={ currentTransitionName }
+        width={componentWidth}
+        height={componentHeight}
+        style={ styles.componentContainer }
+      >
+        { lastComponent }
+      </ReactTransitions>
     );
   }
 }
 
 NavigationStack.propTypes = {
-  components: PropTypes.array
+  components: PropTypes.array.isRequired,
+  componentWidth: PropTypes.number.isRequired,
+  componentHeight: PropTypes.number.isRequired
 };

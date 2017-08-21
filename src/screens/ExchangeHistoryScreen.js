@@ -13,11 +13,6 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const styles = {
   screenContainer:{
-    position: 'relative',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
     backgroundColor: 'white'
   },
 
@@ -62,7 +57,8 @@ class ExchangeHistoryScreen extends Component {
     const {
       shouldShowTopBar,
       exchangeButtonDidPress,
-      exchangeHistory
+      exchangeHistory,
+      screenWidth
     } = this.props;
 
     let topBar = <div></div>;
@@ -70,8 +66,13 @@ class ExchangeHistoryScreen extends Component {
       topBar = <TopBar exchangeButtonDidPress={()=>this._exchangeButtonDidPress()}/>
     }
 
+    let screenContainerStyle = {
+      ...styles.screenContainer,
+      width: screenWidth
+    }
+
     return (
-      <div style={ styles.screenContainer }>
+      <div style={ screenContainerStyle }>
         {topBar}
         <div style={ styles.listContainer }>
             <List>
@@ -91,7 +92,8 @@ class ExchangeHistoryScreen extends Component {
 }
 
 ExchangeHistoryScreen.propTypes = {
-  shouldShowTopBar: PropTypes.bool
+  shouldShowTopBar: PropTypes.bool,
+  screenWidth: PropTypes.number.isRequired
 };
 
 ExchangeHistoryScreen.defaultPropTypes = {
