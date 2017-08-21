@@ -34,22 +34,15 @@
           color: #fff;
       }
 
-      .example-appear {
-        opacity: 0.01;
-      }
-
-      .example-appear.example-appear-active {
-        opacity: 1;
-        transition: opacity .5s ease-in;
-      }
-
       .example-enter {
-        opacity: 0.01;
+        height: 0px;
+        opacity: 0;
       }
 
       .example-enter.example-enter-active {
+        height: 75px;
         opacity: 1;
-        transition: opacity 500ms ease-in;
+        transition: height 300ms ease-out, opacity 300ms ease;
       }
 
       .example-leave {
@@ -58,7 +51,7 @@
 
       .example-leave.example-leave-active {
         opacity: 0.01;
-        transition: opacity 300ms ease-in;
+        transition: opacity 500ms ease-in;
       }
     </style>
     <!--

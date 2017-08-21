@@ -9,6 +9,8 @@ import TopBar from '../components/ExchangeHistory/TopBar';
 import TransactionListItem from '../components/ExchangeHistory/TransactionListItem';
 import ExchangeScreen from './ExchangeScreen';
 
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
 const styles = {
   screenContainer:{
     position: 'relative',
@@ -43,11 +45,11 @@ class ExchangeHistoryScreen extends Component {
   _renderListItems(transactions){
 
     let listItems = [];
-    transactions.forEach((transaction, index)=>{
+    transactions.forEach((transaction)=>{
 
       listItems.push(
           <TransactionListItem 
-            key={ index }
+            key={ transaction.id }
             transaction={ transaction }
           />
       );
@@ -73,9 +75,16 @@ class ExchangeHistoryScreen extends Component {
       <div style={ styles.screenContainer }>
         {topBar}
         <div style={ styles.listContainer }>
-          <List>
-            {this._renderListItems(exchangeHistory.transactions)}
-          </List>
+            <List>
+              <ReactCSSTransitionGroup
+                transitionName="example"
+                transitionEnterTimeout={300}
+                transitionLeaveTimeout={300}
+                component="div"
+              >
+              {this._renderListItems(exchangeHistory.transactions)}
+              </ReactCSSTransitionGroup>
+            </List>
         </div>
       </div>
     );
