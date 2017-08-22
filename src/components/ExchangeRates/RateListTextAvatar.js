@@ -3,7 +3,6 @@ import Avatar from 'material-ui/Avatar';
 import PropTypes from 'prop-types';
 
 const styles = {
-
   componentContainer:{
     position: 'absolute',
     top: 8,
@@ -26,7 +25,6 @@ const styles = {
 export default class RateListTextAvatar extends Avatar {
 
   render() {
-
     const{
       text
     } = this.props;

@@ -45,6 +45,13 @@ export default class RateListItem extends ListItem {
 	      currencyPairData
 	    } = this.props;
 
+	    /*
+	     * CurrencyPairData object holds:
+	     * {Object} fromCurrency - Currency data, that user wants to exchange.
+	     * {Object} toCurrency - Currency data, that user wants to recieve.
+	     * {number} exchangeRate - Amount of currency, that User will recieve ath the moment of exchange.
+	     */
+
 	    let fromCurrency = currencyPairData.fromCurrency;
 	    let toCurrency = currencyPairData.toCurrency;
 	    let exchangeRate = currencyPairData.exchangeRate;

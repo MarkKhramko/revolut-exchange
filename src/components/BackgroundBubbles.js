@@ -35,6 +35,10 @@ export default class BackgroundBubbles extends Component {
       shouldFitWidth
     } = this.props;
 
+    // If should fit width,
+    // fill width of whole window,
+    // if not,
+    // fill height of whole window
     let blurBubblesStyle = {
       ...styles.blurBubbles,
       height: shouldFitWidth ? 'auto' : '100vh',
