@@ -23,8 +23,9 @@ class App extends Component {
   componentWillMount(){
     const timeInterval = 10000; // 10 seconds
 
+    // Fetch exchange rates from OpenExchange every 10 seconds.
     this.timer = setInterval(
-      ()=>{ }, //this._fetchCurrencyRates() 
+      ()=>{this._fetchCurrencyRates()},
       timeInterval
     );
   }
@@ -48,11 +49,14 @@ class App extends Component {
     .then((response) => response.json())
     .then(response => {
       let rates = response.rates;
-      // In case
+      // In case server stops sending normal responses.
       if(rates){
+        // In developement very informative to get every rate fetch.
         if ("production" !== process.env.NODE_ENV){
           console.log('Received rates');
         }
+        // Response from OpenExchange contains server timestamp,
+        // so we can be sure, when was the last update time.
         let timestamp = response.timestamp;
         this._saveCurrencyRates(rates, timestamp);
       }
