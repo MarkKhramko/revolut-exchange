@@ -60,15 +60,6 @@ const styles = {
 
 class ExchangeRatesScreen extends Component {
 
-  constructor(props){
-    super(props);
-
-    this.state = {
-      isCurrencyPairDialogOpen: false,
-      dialogTitle: "Select Currency 1"
-    }
-  }
-
   // #section-begin Navigation
   _dismissThisScreen(){
     const{
@@ -91,18 +82,25 @@ class ExchangeRatesScreen extends Component {
   }
   // #section-end Navigation
 
+  /**
+   * Convert money from currency to curreny by last available rate.
+   * @param {Object} fromCurrency - Currency that User wants to exchange. 
+   * @param {Object} toCurrency - Currency, User wants to receive. 
+   * @returns {number} Result of convertation.
+   */
   _getExchangeRate(fromCurrency, toCurrency){
     const{
       currencyRate
     }=this.props;
 
-    let fromCurrencyRate = currencyRate.rates[fromCurrency.Code]; //0.850468
+    let fromCurrencyRate = currencyRate.rates[fromCurrency.Code];
     let toCurrencyRate = currencyRate.rates[toCurrency.Code];
     let exchangeRate = toCurrencyRate/fromCurrencyRate;
     
     return exchangeRate;
   }
 
+  // #section-begin Interactions
   _handleCancelButtonAction(){
     this._dismissThisScreen();
   }
@@ -110,10 +108,17 @@ class ExchangeRatesScreen extends Component {
   _handleAddNewCurrencyButtonAction(){
     this._openCurrencyPairModal();
   }
+  // #section-end Interactions
 
+   /**
+   * Creates RateListItem array. Each item filled with currency pair data.
+   *
+   * @param {Array} currencyPairs - Array of arrays of two currencies that User choose.
+   * @returns {Array}
+   */
   _renderListItems(currencyPairs){
-    let listItems = [];
 
+    let listItems = [];
     currencyPairs.forEach((pair)=>{
 
       let fromCurrency = pair.fromCurrency;
@@ -153,11 +158,6 @@ class ExchangeRatesScreen extends Component {
   }
 
   render() {
-    const{
-      isCurrencyPairDialogOpen,
-      dialogTitle
-    } = this.state;
-
     const{
       currencyPair,
       isMobileView,

@@ -91,7 +91,7 @@ class CurrencyPairScreen extends Component {
 
     let pair = [];
     checkedCurrencies.forEach((currencyCheck, index)=>{
-      if(currencyCheck == true){
+      if(currencyCheck === true){
         pair.push(Currencies[index]);
       }
     });

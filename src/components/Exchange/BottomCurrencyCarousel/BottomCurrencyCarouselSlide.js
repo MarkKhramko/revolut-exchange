@@ -54,10 +54,6 @@ const styles = {
 
 export default class BottomCurrencyCarouselSlide extends Component {
 
-  constructor(props){
-    super(props);
-  }
-
   // #section-begin Public methods
   /**
    * Returns currency data object, that was passed in props.

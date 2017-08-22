@@ -69,7 +69,7 @@ export default class TopCurrencyCarouselSlide extends Component {
     }
 
     // References, that will be set after first render call
-    this.amountInput;
+    this.amountInput = null;
   }
 
   // #section-begin Public methods

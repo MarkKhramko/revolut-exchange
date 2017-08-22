@@ -46,10 +46,12 @@ export default class BackgroundBubbles extends Component {
         <img 
           src={require('../static/blue-gradient.png')}
           style={ styles.backgroundImage }
+          alt=""
         />
         <img 
           src={require('../static/blur-bubbles.png')}
           style={ blurBubblesStyle }
+          alt=""
         />
       </div>
     );

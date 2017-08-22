@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 
 import Slider from 'react-slick'
 
@@ -28,7 +26,7 @@ export default class TopCurrencyCarousel extends Component {
 
     // References, that will be set after first render call.
     // slidesRefs { Array } holds references to all child slides.
-    this.slidesRefs;
+    this.slidesRefs = null;
   }
 
 
@@ -137,7 +135,7 @@ export default class TopCurrencyCarousel extends Component {
     this.slidesRefs = [];
 
     let slides = [];
-    slidesData.map((slideData, index) =>{
+    slidesData.forEach((slideData, index) =>{
       let currencyData = slideData.currencyData;
       let currencyAmount = slideData.currencyAmount;
 
@@ -181,6 +179,7 @@ export default class TopCurrencyCarousel extends Component {
 TopCurrencyCarousel.propTypes = {
   slideHeight: PropTypes.string.isRequired,
   slidesData: PropTypes.array.isRequired,
+
   exchangeAmountDidChange: PropTypes.func.isRequired,
   slideDidChange: PropTypes.func.isRequired
 };

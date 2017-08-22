@@ -39,7 +39,6 @@ const styles = {
 
   titleContainer:{
     color: 'white',
-    color: 'white',
     fontSize: 22,
     padding: 4
   }
