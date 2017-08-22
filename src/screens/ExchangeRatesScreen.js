@@ -61,6 +61,9 @@ const styles = {
 class ExchangeRatesScreen extends Component {
 
   // #section-begin Navigation
+  /*
+   * Remove current screen from navigation stack.
+   */
   _dismissThisScreen(){
     const{
       navigationStackController 
@@ -68,6 +71,9 @@ class ExchangeRatesScreen extends Component {
     navigationStackController.pop();
   }
 
+  /*
+   * Present CurrencyPairScreen as modal.
+   */
   _openCurrencyPairModal(){
     const{
       navigationStackController,
@@ -138,7 +144,7 @@ class ExchangeRatesScreen extends Component {
       listItems.push(listItem);
     });
 
-    // Last row will contain button to add new pairs
+    // Last row will contain div with button to add new pairs
     listItems.push(
       <div 
         key="PseudoKey"

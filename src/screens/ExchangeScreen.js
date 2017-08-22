@@ -145,6 +145,9 @@ class ExchangeScreen extends Component {
   // #section-end Exchange Operations
 
   // #section-begin Navigation
+  /*
+   * Remove current screen from navigation stack.
+   */
   _dismissThisScreen(){
     const{
       navigationStackController 
@@ -152,6 +155,9 @@ class ExchangeScreen extends Component {
     navigationStackController.pop();
   }
 
+  /*
+   * Transition to rates screen.
+   */
   _openRatesScreen(){
     const{
       navigationStackController, 

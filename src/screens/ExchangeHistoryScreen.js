@@ -27,12 +27,19 @@ const styles = {
 class ExchangeHistoryScreen extends Component {
 
   // #section-begin Navigation
+  /*
+   * Transition to exchange screen.
+   */
   _openExchangeScreen(){
-    const{ navigationStackController }=this.props;
-    if(navigationStackController){
-      navigationStackController.push(<ExchangeScreen/>)
-    }
+    const{ 
+      navigationStackController 
+    }=this.props;
 
+    if(navigationStackController){
+      navigationStackController.push(
+        <ExchangeScreen/>
+      )
+    }
   }
   // #section-end Navigation
 
@@ -40,6 +47,12 @@ class ExchangeHistoryScreen extends Component {
     this._openExchangeScreen();
   }
 
+  /**
+   * Creates TransactionListItem array. Each item filled with transaction data.
+   *
+   * @param {Array} transactions - Array transactions that User performed.
+   * @returns {Array}
+   */
   _renderListItems(transactions){
 
     let listItems = [];
@@ -63,12 +76,17 @@ class ExchangeHistoryScreen extends Component {
       screenWidth
     } = this.props;
 
-    let topBar = <div></div>;
+
+    let topBar;
     if(shouldShowTopBar){
       topBar = 
         <TopBar 
           didPressExchangeButton={()=>this._handleExchangeButtonAction()}
         />
+    }
+    // If top bar should be hidden, make a dummy placeholder.
+    else{
+      topBar = <div></div>;
     }
 
     let screenContainerStyle = {

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
 
 import MobileNavigationScreen from './MobileNavigationScreen';
 import DesktopNavigationScreen from './DesktopNavigationScreen';
@@ -82,7 +81,7 @@ const styles = {
   }
 }
 
-class MainScreen extends Component {
+export default class MainScreen extends Component {
 
   constructor(props){
     super(props);
@@ -91,38 +90,50 @@ class MainScreen extends Component {
       windowWidth: 0,
       windowHeight: 0
     }
+    // Reference to binded method. Will be used by listeners.
+    this.updateDimensions = this._updateDimensions.bind(this);
   }
 
+  /**
+   * Saves width and height of windows's rectangle. 
+   * This method should be called each time window resizes.
+   */
   _updateDimensions() {
     let windowWidth = window.innerWidth;
     let windowHeight = window.innerHeight;
-    this.setState({ windowWidth, windowHeight });
+    this.setState({
+      windowWidth,
+      windowHeight 
+    });
   }
 
-	componentWillMount(){
+	componentDidMount() {
+    // Add listener to window resize event.
+    window.addEventListener("resize", this.updateDimensions);
+    // After component was added to DOM, save its width and height
     this._updateDimensions();
-	}
+  }
 
-  componentDidMount() {
-    window.addEventListener("resize", this._updateDimensions.bind(this));
+  componentWillUnmount() {
+    // Remove event listener, when components will be removed from DOM.
+    window.removeEventListener('resize', this.updateDimensions);
   }
 
   render() {
 
-    // Window size
+    // windowWidth - Width of window's rectangle.
+    // windowHeight - Height of window's rectangle.
     const {
       windowWidth,
       windowHeight
     } = this.state;
 
-
     let componentToRender;
-
-    // Layout for mobiles
+    // Layout for mobiles.
     if(this.state.windowWidth < 700){
       componentToRender = <MobileNavigationScreen />
     }
-    // Layout for tablets and desktops
+    // Layout for tablets and desktops.
     else{
       componentToRender = 
         <DesktopNavigationScreen
@@ -138,18 +149,3 @@ class MainScreen extends Component {
     );
   }
 }
-
-function mapStateToProps(state) {
-  return {
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MainScreen);
