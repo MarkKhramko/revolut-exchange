@@ -15,7 +15,7 @@ See [Material UI](https://github.com/callemall/material-ui)
 
 #### Local deployment
 ```sh
-$ git clone git@github.com:MarkKhramko/revolut-exchange.git
+$ git clone https://github.com/MarkKhramko/revolut-exchange.git
 $ cd revolut-exchange
 $ npm install
 $ npm start
