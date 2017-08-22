@@ -24,7 +24,7 @@ const styles = {
     position: 'absolute',
     top: 0,
     left: 0,
-    height: '100vh'
+    overflow: 'hidden',
   }
 }
 
@@ -35,13 +35,11 @@ export default class BackgroundBubbles extends Component {
       shouldFitWidth
     } = this.props;
 
-    // let blurBubblesStyle = {
-    //   ...styles.blurBubbles,
-    //   height: shouldFitWidth ? 'auto' : '100%',
-    //   width: shouldFitWidth ? '100%' : 'auto',
-    // }
-
-    let blurBubblesStyle = styles.blurBubbles;
+    let blurBubblesStyle = {
+      ...styles.blurBubbles,
+      height: shouldFitWidth ? 'auto' : '100vh',
+      width: shouldFitWidth ? '100vw' : 'auto',
+    }
 
     return (
       <div style={ styles.componentContainer }>

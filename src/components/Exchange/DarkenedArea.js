@@ -41,6 +41,11 @@ export default class DarkenedArea extends Component {
     this._updateDimensions();
   }
 
+  componentWillUnmount() {
+    // Remove event listener, when components will be removed from DOM.
+    window.removeEventListener('resize', this.updateDimensions);
+  }
+
   /**
    * Saves width and height of component's rectangle. 
    * This method should be called each time window resizes.

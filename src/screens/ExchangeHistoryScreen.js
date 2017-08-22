@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import {List} from 'material-ui/List';
@@ -27,10 +26,6 @@ const styles = {
 
 class ExchangeHistoryScreen extends Component {
 
-  constructor(props){
-    super(props);
-  }
-
   // #section-begin Navigation
   _openExchangeScreen(){
     const{ navigationStackController }=this.props;
@@ -50,10 +45,10 @@ class ExchangeHistoryScreen extends Component {
     let listItems = [];
     transactions.forEach((transaction)=>{
       listItems.push(
-          <TransactionListItem 
-            key={ transaction.id }
-            transaction={ transaction }
-          />
+        <TransactionListItem 
+          key={ transaction.id }
+          transaction={ transaction }
+        />
       );
     })
 
@@ -64,14 +59,16 @@ class ExchangeHistoryScreen extends Component {
 
     const {
       shouldShowTopBar,
-      didPressExchangeButton,
       exchangeHistory,
       screenWidth
     } = this.props;
 
     let topBar = <div></div>;
     if(shouldShowTopBar){
-      topBar = <TopBar didPressExchangeButton={()=>this._handleExchangeButtonAction()}/>
+      topBar = 
+        <TopBar 
+          didPressExchangeButton={()=>this._handleExchangeButtonAction()}
+        />
     }
 
     let screenContainerStyle = {

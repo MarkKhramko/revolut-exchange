@@ -171,7 +171,8 @@ class CurrencyPairScreen extends Component {
     }=this.state;
 
     const{
-      screenWidth
+      screenWidth,
+      isMobileView
     }=this.props;
 
     // If User didn't selected any currency, 
@@ -187,7 +188,9 @@ class CurrencyPairScreen extends Component {
     }
     return (
       <div style={ screenContainerStyle }>
-        <BackgroundBubbles />
+        <BackgroundBubbles
+          shouldFitWidth={!isMobileView}
+        />
         <TopBar
           title={ topBarTitle }
         />
@@ -202,6 +205,7 @@ class CurrencyPairScreen extends Component {
 }
 
 CurrencyPairScreen.propTypes = {
+  isMobileView: PropTypes.bool.isRequired,
   screenWidth: PropTypes.number.isRequired,
 };
 

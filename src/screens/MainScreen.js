@@ -119,7 +119,7 @@ class MainScreen extends Component {
     let componentToRender;
 
     // Layout for mobiles
-    if(this.state.windowWidth < 640){
+    if(this.state.windowWidth < 700){
       componentToRender = <MobileNavigationScreen />
     }
     // Layout for tablets and desktops

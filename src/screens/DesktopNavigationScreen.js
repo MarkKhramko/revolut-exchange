@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import NavigationStack from '../components/NavigationStack';
@@ -38,38 +37,45 @@ class DesktopNavigationScreen extends Component {
       windowHeight: 0
     }
 
+    // Reference to binded method. Will be used by listeners.
     this.updateDimensions = this._updateDimensions.bind(this);
   }
 
+  /**
+   * Saves width and height of windows's rectangle. 
+   * This method should be called each time window resizes.
+   */
   _updateDimensions() {
     let windowWidth = window.innerWidth;
     let windowHeight = window.innerHeight;
-    this.setState({ windowWidth, windowHeight });
+    this.setState({
+      windowWidth,
+      windowHeight 
+    });
   }
 
-	componentWillMount(){
-    this._updateDimensions();
-	}
-
   componentDidMount() {
+    // Add listener to window resize event.
     window.addEventListener("resize", this.updateDimensions);
+    // After component was added to DOM, save its width and height
+    this._updateDimensions();
   }
 
   componentWillUnmount() {
+    // Remove event listener, when components will be removed from DOM.
     window.removeEventListener('resize', this.updateDimensions);
   }
 
-  // #section-begin Interactions
-  // #section-end Interactions
-
   render() {
 
-    // Window size
+    // windowWidth - Width of window's rectangle.
+    // windowHeight - Height of window's rectangle.
     const {
       windowWidth,
       windowHeight
     } = this.props;
 
+    // 320 - width of all iPhones up to 6
     let rightSplitContainerWidth = 320;
     let leftSplitContainerWidth = windowWidth - rightSplitContainerWidth;
 
@@ -83,7 +89,7 @@ class DesktopNavigationScreen extends Component {
       ...styles.splitScreenContainer,
       width: rightSplitContainerWidth,
       overflow: 'scroll',
-      zIndex: 10000
+      zIndex: 10000 // Should overlap all animations in left side
     }
 
     const navigationStackProps = {
@@ -110,11 +116,6 @@ class DesktopNavigationScreen extends Component {
       </div>
     );
   }
-}
-
-DesktopNavigationScreen.propTypes = {
-  windowWidth: PropTypes.number.isRequired,
-  windowHeight: PropTypes.number.isRequired
 }
 
 function mapStateToProps(state) {

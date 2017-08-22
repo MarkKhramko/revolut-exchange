@@ -35,7 +35,7 @@ const styles = {
 
   bottomCarouselContainer:{
     padding: 32,
-    paddingTop: '14%'
+    paddingTop: 40
   },
 
   darkenedAreaContainer:{
@@ -43,7 +43,7 @@ const styles = {
     left: 0,
     right: 0,
     bottom: 0,
-    height: '50%'
+    height: '48%'
   }
 }
 
@@ -59,8 +59,8 @@ class ExchangeScreen extends Component {
     }
 
     // References, that will be set after first render call
-    this.topCarousel;
-    this.bottomCarousel;
+    this.topCarousel = null;
+    this.bottomCarousel = null;
   }
 
   // #section-begin Exchange Operations
@@ -305,14 +305,12 @@ class ExchangeScreen extends Component {
   render() {
 
     const {
-      isRateModalOpen,
       topCarouselCurrency,
       topCarouselAmount,
       bottomCarouselCurrency
     }=this.state;
 
     const {
-      currencyRate,
       userAccount,
       isMobileView,
       screenWidth
@@ -330,7 +328,9 @@ class ExchangeScreen extends Component {
 
     return (
     	<div style={ screenContainerStyle }>
-        <BackgroundBubbles />
+        <BackgroundBubbles
+          shouldFitWidth={!isMobileView}
+        />
         <div style={styles.topBarContainer}>
           <TopBar
             shouldHideCancelButton={!isMobileView}

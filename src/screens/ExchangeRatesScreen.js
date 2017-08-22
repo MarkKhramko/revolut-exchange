@@ -71,14 +71,22 @@ class ExchangeRatesScreen extends Component {
 
   // #section-begin Navigation
   _dismissThisScreen(){
-    const{ navigationStackController }=this.props;
+    const{
+      navigationStackController 
+    }=this.props;
     navigationStackController.pop();
   }
 
   _openCurrencyPairModal(){
-    const{ navigationStackController }=this.props;
+    const{
+      navigationStackController,
+      isMobileView
+    }=this.props;
+
     navigationStackController.pushModal(
-      <CurrencyPairScreen />
+      <CurrencyPairScreen
+        isMobileView={ isMobileView }
+      />
     );
   }
   // #section-end Navigation
@@ -163,7 +171,9 @@ class ExchangeRatesScreen extends Component {
 
     return (
       <div style={ screenContainerStyle }>
-        <BackgroundBubbles />
+        <BackgroundBubbles
+          shouldFitWidth={!isMobileView}
+        />
         <TopBar
           title="Rates"
           didPressCancelButton={()=>this._handleCancelButtonAction()}
