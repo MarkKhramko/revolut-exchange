@@ -1,8 +1,12 @@
 # Revolut Exchange
 ### My solution of Revolut task
-#### Based on React MaterialUI
+#### Based on Open Exchange API
 
-See [MaterialUI](https://github.com/callemall/material-ui)
+See [Open Exchange](https://openexchangerates.org)
+
+#### Crafted with beautiful React Material UI
+
+See [Material UI](https://github.com/callemall/material-ui)
 
 #### Local deployment
 ```sh
@@ -11,4 +15,4 @@ $ cd revolut-exchange
 $ npm install
 $ npm start
 ```
-After installation got to [localhost:3000](http://localhost:3000)
+After installation go to [localhost:3000](http://localhost:3000)
