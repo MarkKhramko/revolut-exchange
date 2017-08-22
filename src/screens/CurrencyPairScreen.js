@@ -80,8 +80,6 @@ class CurrencyPairScreen extends Component {
       }
     });
 
-    console.log(pair);
-
     currencyPairActions.addPair(pair[0], pair[1]);
     
     this._dismissThisScreen();

@@ -21,38 +21,51 @@ const mainAppStyle = {
 class App extends Component {
 
   componentWillMount(){
-    const timeInterval = 1000; // 10 seconds
+    const timeInterval = 10000; // 10 seconds
 
     this.timer = setInterval(
-      ()=>this._fetchExchangeRate(),
+      ()=>this._fetchCurrencyRates(),
       timeInterval
     );
   }
 
   componentWillUnmount() {
+    // Delete timer, when component will be removed from DOM
     clearTimeout(this.timer);
   }
 
-  _fetchExchangeRate(){
-    const { currencyRateActions } = this.props;
-    // currencyRateActions.setTimestamp(Math.random());
-    // currencyRateActions.setRates([Math.random()]);
-  }
-
   // #section-begin Networking
+  /**
+   * Sends get request and recieves JSON object with current currency rates.
+   */
   _fetchCurrencyRates(){
 
     let url = APIConstants.USD_BASED_JSON_URL;
     fetch(url, {
       'Content-Type': 'application/json'
     })
+    // Parse response as JSON
     .then((response) => response.json())
     .then(response => {
-      console.log(response.rates);
+      let rates = response.rates;
+      let timestamp = response.timestamp;
+      this._saveCurrencyRates(rates, timestamp);
     })
     .catch((err) => {
         console.log('Fetch error', err)
     })
+  }
+
+  /**
+   * Saves rates into global application state.
+   * @param {Object} rates - Object with key (Code) - value (Rate) pair
+   * @param {String} timestamp - Time from exchange server
+   */
+  _saveCurrencyRates(rates, timestamp){
+    const{
+      currencyRateActions
+    }=this.props;
+    currencyRateActions.setRates(rates, timestamp);
   }
   // #section-end Networking
 
