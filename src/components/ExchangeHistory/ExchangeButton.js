@@ -77,5 +77,5 @@ RateButton.propTypes = {
 };
 
 RateButton.defaultPropTypes = {
-  buttonDidPress: ()=>{},
+  onTouchTap: ()=>{},
 };

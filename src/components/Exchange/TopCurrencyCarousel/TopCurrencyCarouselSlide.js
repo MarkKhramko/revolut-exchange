@@ -73,24 +73,35 @@ export default class TopCurrencyCarouselSlide extends Component {
   }
 
   // #section-begin Public methods
+  /**
+   * Focus on exchange amount input.
+   */
   focusInput(){
     this.amountInput.focus();
   }
 
+  /**
+   * Returns amount, that user wants to exchange.
+   * @returns {number} value of exchange amount input
+   */
   getExchangeAmount(){
 
     const{amountInputValue} = this.state;
 
-    // Becouse we always have minus in front of the number,
+    // Because we always have minus in front of the number string value,
     // we should remove it to procceed with number
     let valueWithoutMinus = amountInputValue.replace(/-/g, "");
 
     // Replace all commas to dots and convert string to number
     let amount = Number(valueWithoutMinus.replace(/,/g, "."));
-    console.log(amount);
+
     return amount;
   }
 
+  /**
+   * Returns currency data object, that was passed in props.
+   * @returns {Object} currency data object, that was passed in props.
+   */
   getCurrencyData(){
     const{
       currencyData
@@ -99,7 +110,12 @@ export default class TopCurrencyCarouselSlide extends Component {
   }
   // #section-end Public methods
 
-  // #section-begin input validation
+  // #section-begin Input Validation
+  /**
+   * Checks if string is accepted by regex pattern.
+   * @param {String} value - String to test
+   * @returns {bool} Result of validation.
+   */
   _validateInput(value){
 
     // Accept only strings, which are like 
@@ -108,25 +124,33 @@ export default class TopCurrencyCarouselSlide extends Component {
     
     return pattern.test(value);
   }
-  // #section-end input validation
+  // #section-end Input Validation
 
   // #section-begin Interactions
+  /**
+   * Top row is an area, that holds currency code and exchange input,
+   * if user clicked or tapped in this area, focus on input.
+   */
   _handleTopRowClick(){
     this.amountInput.focus();
   }
 
+  /**
+   * Validates string from exchange amount input and saves it in state.
+   * @param {String} newValue - Value from exchange amount input, that should be validated and saved.
+   */
   _handleAmountInputValueChange(newValue){
 
     // Becouse we always have minus in front of the number,
     // we should remove it to validate value
     let valueWithoutMinus = newValue.replace(/-/g, "");
 
-    // If string without minus is empty, set empty string
+    // If string without minus is empty, set empty string.
     if(valueWithoutMinus.length < 1){
       let amountInputValue = "";
       this.setState({ amountInputValue });
     }
-    // If string passed validation, set it with minus in front
+    // If string passed validation, save it in state with minus in front.
     else if(this._validateInput(valueWithoutMinus)){
       let amountInputValue = "-" + valueWithoutMinus;
       this.setState({ amountInputValue });
@@ -136,9 +160,12 @@ export default class TopCurrencyCarouselSlide extends Component {
   // #section-end Interactions
 
   _fitFontSizeInAmountInput(amountLength, windowWidth){
-
   }
 
+  /**
+   * Notifies parent component about change in User's exchange amount.
+   * @param {String} amountInputvalue - Value from exchange amount input.
+   */
   _notifyAboutExchangeAmountChange(amountInputvalue){
 
     const{
@@ -146,7 +173,7 @@ export default class TopCurrencyCarouselSlide extends Component {
       currencyData 
     } = this.props;
 
-    // Replace all commas to dots and convert string to number
+    // Replace all commas to dots and convert string to number.
     let amount = Number(amountInputvalue.replace(/,/g, "."));
     exchangeAmountDidChange(amount, currencyData);
   }

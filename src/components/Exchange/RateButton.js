@@ -61,7 +61,9 @@ export default class RateButton extends Component {
     let rateWithFourDigitsAfterPoint = exchangeRate.toFixed(4);
     // Extract last two digits as string
     let lastTwoDigits = rateWithFourDigitsAfterPoint.slice(-2);
-
+    /*
+     * Here in render() I use spans with different font sizes to achieve effect of different font heights.
+     */
     return (
       <button
         style={styles.button}

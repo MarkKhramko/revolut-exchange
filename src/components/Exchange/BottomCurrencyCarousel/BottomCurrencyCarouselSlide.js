@@ -56,21 +56,13 @@ export default class BottomCurrencyCarouselSlide extends Component {
 
   constructor(props){
     super(props);
-
-    this.state = {
-    }
   }
 
   // #section-begin Public methods
-  focusInput(){
-    this.amountInput.focus();
-  }
-
-  getExchangeAmount(){
-    const{amountInputValue} = this.state;
-    return amountInputValue;
-  }
-
+  /**
+   * Returns currency data object, that was passed in props.
+   * @returns {Object} currency data object, that was passed in props.
+   */
   getCurrencyData(){
     const{
       currencyData
@@ -87,6 +79,9 @@ export default class BottomCurrencyCarouselSlide extends Component {
     } = this.props;
 
     let receivedAmountText;
+    // If receivedAmount is bigger than 0,
+    // add plus sign in front of string,
+    // otherwise make string empty.
     if(receivedAmount > 0){
       receivedAmountText = '+' + receivedAmount.toFixed(2);
     }

@@ -103,15 +103,10 @@ class ExchangeRatesScreen extends Component {
     this._openCurrencyPairModal();
   }
 
-  _handleListClick(currency, index){
-  }
-
   _renderListItems(currencyPairs){
     let listItems = [];
 
     currencyPairs.forEach((pair)=>{
-
-      console.log(pair);
 
       let fromCurrency = pair.fromCurrency;
       let toCurrency = pair.toCurrency;

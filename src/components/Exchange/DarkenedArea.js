@@ -29,16 +29,22 @@ export default class DarkenedArea extends Component {
     super(props);
 
     this.state = {
-      width: 0,
-      height: 0
+      width: 0, // Width of component's rectangle.
+      height: 0 // Height of component's rectangle.
     }
   }
 
   componentDidMount() {
+    // Add listener to window resize event.
     window.addEventListener("resize", this._updateDimensions.bind(this));
+    // After component was added to DOM, save its width and height
     this._updateDimensions();
   }
 
+  /**
+   * Saves width and height of component's rectangle. 
+   * This method should be called each time window resizes.
+   */
   _updateDimensions(){
     if(this.refs.container){
       let width = this.refs.container.offsetWidth;
@@ -49,11 +55,14 @@ export default class DarkenedArea extends Component {
 
   render() {
 
+    // width - Width of component's rectangle.
+    // height - Height of component's rectangle.
     const{
       width,
       height
     } = this.state;
 
+    // Points that go around component's rectangle and makes little arrow in the middle.
     let linePoints = [
       {x:0, y:0},
       {x:width/2 - arrowSize.width/2, y: 0},
@@ -77,7 +86,7 @@ export default class DarkenedArea extends Component {
           stroke="none" 
           strokeWidth="1"
           fill="rgba(0,0,0, 0.3)"
-          r={0}
+          r={0} // Radius of joint curves
         />
       </svg>
       </div>

@@ -1,5 +1,4 @@
 import { 
-	SET_TIMESTAMP,
 	SET_RATES
 } from '../constants/CurrencyRateActions';
 

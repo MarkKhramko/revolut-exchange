@@ -8,12 +8,11 @@ import Slider from 'react-slick'
 import BottomCurrencyCarouselSlide from './BottomCurrencyCarouselSlide';
 
 const carouselSettings = {
-    dots: true,
-    arrows: true,
-    infinite: false,
-    speed: 350,
-    vertical: false,
-    slidesToShow: 1
+    dots: true, // Should show pagination.
+    arrows: true, // Should show left and right arrow.
+    infinite: false, // Carousel should not be looped.
+    speed: 350, // Speed of slides switch animation in ms.
+    slidesToShow: 1 // How much slides should be visible.
 };
 
 export default class BottomCurrencyCarousel extends Component {
@@ -25,10 +24,15 @@ export default class BottomCurrencyCarousel extends Component {
       currentSlideIndex: 0,
       currentCurrencyData: props.slidesData[0].currencyData,
     }
-    // References, that will be set after first render call
+    // References, that will be set after first render call.
+    // slidesRefs { Array } holds references to all child slides.
     this.slidesRefs;
   }
 
+  /**
+   * Returns currency data object from current slide.
+   * @returns {Object} currency data object from current slide.
+   */
   getCurrencyData(){
     const{
       currentCurrencyData
@@ -36,18 +40,29 @@ export default class BottomCurrencyCarousel extends Component {
     return currentCurrencyData;
   }
 
+  /**
+   * Method is called after user changes slide.
+   * @param {number} slideIndex - Current slide index. Index, that was passed, by carousel.
+   */
   _handleSliderAfterChange(slideIndex){
     const {
       slidesData
     } = this.props;
 
     let refIndex;
+    // During the work of carousel, 
+    // there could be left number of empty slides,
+    // we dont want them, so we move our index by slides count positions.
     if(this.slidesRefs.length > slidesData.length){
       refIndex = slideIndex + slidesData.length;
     }
+    // If we did not detect any empty slides,
+    // procceed with index itself.
     else{
       refIndex = slideIndex;
     }
+
+    // Extract reference to slide from references array.
     let slide = this.slidesRefs[refIndex];
 
     let currentSlideIndex = slideIndex;
@@ -55,8 +70,17 @@ export default class BottomCurrencyCarousel extends Component {
     this.setState({ currentSlideIndex, currentCurrencyData })
   }
 
+  /**
+   * Creates and returns BottomCurrencyCarouselSlide Array.
+   * @param {Array} slidesData - Holds parameters for each slide.
+   * @param {(number|String)} slideHeight - Height of carousel slide.
+   * @returns {Array} Rendered BottomCurrencyCarouselSlide slides.
+   */
   _renderSlides(slidesData, slideHeight){
 
+    // slidesRefs { Array } holds references to all child slides.
+    // Empty slidesRefs array after every render, 
+    // so it can be filled with new slides references.
     this.slidesRefs = [];
     let slides = [];
     slidesData.map((slideData, index) =>{
@@ -72,6 +96,7 @@ export default class BottomCurrencyCarousel extends Component {
             height:slideHeight
           }}>
           <BottomCurrencyCarouselSlide
+            // Save reference to this slide
             ref={(ref)=>this.slidesRefs.push(ref)}
             currencyData={ currencyData }
             currencyAmount={ currencyAmount }
@@ -89,7 +114,7 @@ export default class BottomCurrencyCarousel extends Component {
     } = this.props;
 
     return (
-      <Slider 
+      <Slider
         {...carouselSettings}
         afterChange={(index)=>this._handleSliderAfterChange(index)}
       >

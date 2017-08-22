@@ -38,9 +38,11 @@ export default class TopBar extends Component {
   render() {
     const { 
       shouldHideCancelButton,
-      cancelButtonDidPress,
-      rateButtonDidPress,
-      exchangeButtonDidPress,
+
+      didPressCancelButton,
+      didPressRateButton,
+      didPressExchangeButton,
+      
       exchangeRate,
       convertableCurrencyData,
       receivableCurrencyData
@@ -52,7 +54,7 @@ export default class TopBar extends Component {
       cancelButton = 
           <FlatButton 
             label="Cancel"
-            onTouchTap={ cancelButtonDidPress }
+            onTouchTap={ didPressCancelButton }
             hoverColor="#0D55A5"
             labelStyle={ styles.buttonLabel }
             style={styles.button}
@@ -68,14 +70,14 @@ export default class TopBar extends Component {
         <div style={ styles.buttonsContainer }>
           {cancelButton}
           <RateButton
-            buttonDidPress={rateButtonDidPress}
+            buttonDidPress={didPressRateButton}
             exchangeRate={exchangeRate}
             convertableCurrencyData={convertableCurrencyData}
             receivableCurrencyData={receivableCurrencyData}
           />
           <FlatButton
             label="Exchange"
-            onTouchTap={ exchangeButtonDidPress }
+            onTouchTap={ didPressExchangeButton }
             hoverColor="#0D55A5"
             labelStyle={ styles.buttonLabel }
             style={styles.button}
@@ -87,12 +89,20 @@ export default class TopBar extends Component {
 }
 
 TopBar.propTypes = {
+
+  // Should left top cancel button be hidden.
+  // It is true in mobile layout.
   shouldHideCancelButton: PropTypes.bool.isRequired,
-  cancelButtonDidPress: PropTypes.func.isRequired,
-  rateButtonDidPress: PropTypes.func.isRequired,
-  exchangeButtonDidPress: PropTypes.func.isRequired,
+
+  didPressCancelButton: PropTypes.func.isRequired,
+  didPressRateButton: PropTypes.func.isRequired,
+  didPressExchangeButton: PropTypes.func.isRequired,
+
+  // How much user will recieve, if they exchange currencies.
   exchangeRate: PropTypes.number.isRequired,
+  // Currency data, that User wants to exhange.
   convertableCurrencyData: PropTypes.object.isRequired,
+  // Currency data, that User wants to recieve.
   receivableCurrencyData: PropTypes.object.isRequired
 };
 

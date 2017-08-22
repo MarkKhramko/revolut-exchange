@@ -8,12 +8,11 @@ import Slider from 'react-slick'
 import TopCurrencyCarouselSlide from './TopCurrencyCarouselSlide';
 
 const carouselSettings = {
-    dots: true,
-    arrows: true,
-    infinite: false,
-    speed: 350,
-    vertical: false,
-    slidesToShow: 1
+    dots: true, // Should show pagination.
+    arrows: true, // Should show left and right arrow.
+    infinite: false, // Carousel should not be looped.
+    speed: 350, // Speed of slides switch animation in ms.
+    slidesToShow: 1 // How much slides should be visible.
 };
 
 export default class TopCurrencyCarousel extends Component {
@@ -26,21 +25,36 @@ export default class TopCurrencyCarousel extends Component {
       currentCurrencyData: props.slidesData[0].currencyData,
       currentExchangeAmount: 0
     }
-    // References, that will be set after first render call
+
+    // References, that will be set after first render call.
+    // slidesRefs { Array } holds references to all child slides.
     this.slidesRefs;
   }
 
+
   componentDidMount() {
+    // After carousel was added to the DOM,
+    // focus on current slide input.
     let firstSlide = this.slidesRefs[0];
     firstSlide.focusInput();
   }
 
   // #section-begin Public methods
+  /**
+   * Returns amount of currency, that user wants to exchange.
+   * @returns {number} amount of currency, that user wants to exchange.
+   */
   getExchangeAmount(){
-    const{ currentExchangeAmount } = this.state;
+    const{ 
+      currentExchangeAmount 
+    } = this.state;
     return currentExchangeAmount;
   }
 
+  /**
+   * Returns currency data object from current slide.
+   * @returns {Object} currency data object from current slide.
+   */
   getCurrencyData(){
     const{
       currentCurrencyData
@@ -49,6 +63,12 @@ export default class TopCurrencyCarousel extends Component {
   }
   // #section-end Public methods
 
+  /**
+   * Saves state of how much user wants to exchange and which currency.
+   * Also notifies parent component about changes.
+   * @param {number} amount - How much user wants to exchange.
+   * @param {Object} currencyData - Current selected currency.
+   */
   _slideExchangeAmountDidChange(amount, currencyData){
     const{
       exchangeAmountDidChange
@@ -61,9 +81,14 @@ export default class TopCurrencyCarousel extends Component {
       currentExchangeAmount
     });
 
+    // Notify parent object, about changes in currency and exchange amount.
     exchangeAmountDidChange(currencyData, amount);
   }
 
+  /**
+   * Method is called after user changes slide.
+   * @param {number} slideIndex - Current slide index. Index, that was passed, by carousel.
+   */
   _handleSliderAfterChange(slideIndex){
     const {
       slidesData,
@@ -71,13 +96,21 @@ export default class TopCurrencyCarousel extends Component {
     } = this.props;
 
     let refIndex;
+    // During the work of carousel, 
+    // there could be left number of empty slides,
+    // we dont want them, so we move our index by slides count positions.
     if(this.slidesRefs.length > slidesData.length){
       refIndex = slideIndex + slidesData.length;
     }
+    // If we did not detect any empty slides,
+    // procceed with index itself.
     else{
       refIndex = slideIndex;
     }
+
+    // Extract reference to slide from references array.
     let slide = this.slidesRefs[refIndex];
+
     // After slide has been selected, focus on input inside
     slide.focusInput();
 
@@ -86,10 +119,21 @@ export default class TopCurrencyCarousel extends Component {
     let currentExchangeAmount = slide.getExchangeAmount();
     this.setState({ currentSlideIndex, currentCurrencyData, currentExchangeAmount });
 
+    // Notify parent object, about changes in currency and exchange amount.
     slideDidChange(currentCurrencyData, currentExchangeAmount)
   }
 
+  /**
+   * Creates and returns TopCurrencyCarouselSlide Array.
+   * @param {Array} slidesData - Holds parameters for each slide.
+   * @param {(number|String)} slideHeight - Height of carousel slide.
+   * @returns {Array} Rendered TopCurrencyCarouselSlide slides.
+   */
   _renderSlides(slidesData, slideHeight){
+
+    // slidesRefs { Array } holds references to all child slides.
+    // Empty slidesRefs array after every render, 
+    // so it can be filled with new slides references.
     this.slidesRefs = [];
 
     let slides = [];
@@ -104,6 +148,7 @@ export default class TopCurrencyCarousel extends Component {
             height:slideHeight
           }}>
           <TopCurrencyCarouselSlide
+            // Save reference to this slide
             ref={(ref)=>this.slidesRefs.push(ref)}
             currencyData={ currencyData }
             currencyAmount={ currencyAmount }

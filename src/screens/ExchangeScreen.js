@@ -63,10 +63,6 @@ class ExchangeScreen extends Component {
     this.bottomCarousel;
   }
 
-  // componentDidMount(){
-  //   this._openRatesScreen();
-  // }
-
   // #section-begin Exchange Operations
   _validateReduction(currencyData, reducedAmount){
     const{
@@ -133,7 +129,7 @@ class ExchangeScreen extends Component {
     navigationStackController.push(
       <ExchangeRatesScreen
         isMobileView={isMobileView}
-        cancelButtonDidPress={()=>{}}
+        didPressCancelButton={()=>{}}
       />
     );
   }
@@ -144,7 +140,7 @@ class ExchangeScreen extends Component {
     this._dismissThisScreen();
   }
 
-  _handleRateButtonDidPress(){
+  _handleRateButtonAction(){
     this._openRatesScreen();
   }
 
@@ -286,9 +282,9 @@ class ExchangeScreen extends Component {
         <div style={styles.topBarContainer}>
           <TopBar
             shouldHideCancelButton={!isMobileView}
-            cancelButtonDidPress={()=>this._handleCancelButtonAction()}
-            rateButtonDidPress={()=>this._handleRateButtonDidPress()}
-            exchangeButtonDidPress={()=>this._handleExchangeButtonAction()}
+            didPressCancelButton={()=>this._handleCancelButtonAction()}
+            didPressRateButton={()=>this._handleRateButtonAction()}
+            didPressExchangeButton={()=>this._handleExchangeButtonAction()}
             exchangeRate={currentExchangeRate}
             convertableCurrencyData={topCarouselCurrency}
             receivableCurrencyData={bottomCarouselCurrency}

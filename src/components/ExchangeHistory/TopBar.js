@@ -22,15 +22,20 @@ const styles = {
 
 export default class TopBar extends Component {
   render() {
-    const { exchangeButtonDidPress } = this.props;
+    const { 
+      didPressExchangeButton 
+    } = this.props;
 
     return (
       <div style={ styles.componentContainer }>
         <BackgroundBubbles
+          // By default BackgroundBubbles are programmed to fit height of component,
+          // but this bar has width bigger, that height,
+          // so we should do the opposite.
           shouldFitWidth={ true }
         />
         <ExchangeButton
-          onTouchTap={ exchangeButtonDidPress }
+          onTouchTap={ didPressExchangeButton }
         />
       </div>
     );
@@ -38,7 +43,8 @@ export default class TopBar extends Component {
 }
 
 TopBar.propTypes = {
-  exchangeButtonDidPress: PropTypes.func.isRequired
+  didPressExchangeButton: PropTypes.func.isRequired
 };
 
+// Height of component container
 TopBar.HEIGHT = styles.componentContainer.height;

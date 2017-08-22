@@ -29,14 +29,7 @@ class ExchangeHistoryScreen extends Component {
 
   constructor(props){
     super(props);
-
-    this.state = {
-    }
   }
-
-  // componentDidMount(){
-  //   this._openExchangeScreen();
-  // }
 
   // #section-begin Navigation
   _openExchangeScreen(){
@@ -48,7 +41,7 @@ class ExchangeHistoryScreen extends Component {
   }
   // #section-end Navigation
 
-  _exchangeButtonDidPress(){
+  _handleExchangeButtonAction(){
     this._openExchangeScreen();
   }
 
@@ -71,14 +64,14 @@ class ExchangeHistoryScreen extends Component {
 
     const {
       shouldShowTopBar,
-      exchangeButtonDidPress,
+      didPressExchangeButton,
       exchangeHistory,
       screenWidth
     } = this.props;
 
     let topBar = <div></div>;
     if(shouldShowTopBar){
-      topBar = <TopBar exchangeButtonDidPress={()=>this._exchangeButtonDidPress()}/>
+      topBar = <TopBar didPressExchangeButton={()=>this._handleExchangeButtonAction()}/>
     }
 
     let screenContainerStyle = {
