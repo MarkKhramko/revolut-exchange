@@ -24,7 +24,7 @@ class App extends Component {
     const timeInterval = 10000; // 10 seconds
 
     this.timer = setInterval(
-      ()=>{ }, //this._fetchCurrencyRates() 
+      ()=>{this._fetchCurrencyRates()},
       timeInterval
     );
   }
