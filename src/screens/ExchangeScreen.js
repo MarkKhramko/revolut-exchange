@@ -63,10 +63,6 @@ class ExchangeScreen extends Component {
     this.bottomCarousel;
   }
 
-  componentDidMount() {
-    // this._openRatesScreen();
-  }
-
   // #section-begin Exchange Operations
   _validateReduction(currencyData, reducedAmount){
     const{

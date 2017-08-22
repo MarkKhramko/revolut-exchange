@@ -83,7 +83,8 @@ class DesktopNavigationScreen extends Component {
     let rightSplitScreenContainerStyle = {
       ...styles.splitScreenContainer,
       width: rightSplitContainerWidth,
-      overflow: 'scroll'
+      overflow: 'scroll',
+      zIndex: 10000
     }
 
     const navigationStackProps = {

@@ -8,12 +8,14 @@ import {Currencies} from '../constants/Currencies';
 const initialState = {
   pairs:[
     {
-      fromCurrencyCode: Currencies[4].Code,
-      toCurrencyCode: [48].Code
+      id: uuidv4(),
+      fromCurrency: Currencies[4],
+      toCurrency: Currencies[48]
     },
     {
-      fromCurrencyCode: [4].Code,
-      toCurrencyCode: [69].Code
+      id: uuidv4(),
+      fromCurrency: Currencies[4],
+      toCurrency: Currencies[20]
     }
   ]
 };
@@ -25,8 +27,8 @@ export default function currencyPair(state = initialState, action) {
       let pairs = state.pairs;
       let newPair = {
         id: uuidv4(),
-        fromCurrencyCode: action.fromCurrencyData.Code,
-        toCurrencyCode: action.toCurrencyData.Code
+        fromCurrency: action.fromCurrencyData,
+        toCurrency: action.toCurrencyData
       }
       pairs.push(newPair);
       return {

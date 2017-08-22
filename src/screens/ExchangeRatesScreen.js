@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import * as CurrencyPairActions from '../actions/currencyPairActions';
 
 import BackgroundBubbles from '../components/BackgroundBubbles';
-import {List, ListItem} from 'material-ui/List';
+import TopBar from '../components/ExchangeRates/TopBar';
+import {List} from 'material-ui/List';
+import RateListItem from '../components/ExchangeRates/RateListItem';
 import FlatButton from 'material-ui/FlatButton';
 
-import Dialog from 'material-ui/Dialog';
 import CurrencyPairScreen from './CurrencyPairScreen';
 
 const styles = {
@@ -36,9 +38,16 @@ const styles = {
     borderColor: 'rgba(255, 255, 255, 0.25)'
   },
 
+  buttonContainer:{
+    textAlign: 'center',
+    padding: '10vh'
+  },
+
   button: {
     borderRadius: 5,
-    padding: 0
+    paddingLeft: 10,
+    paddingRight: 10,
+    backgroundColor: '#0D55A5'
   },
 
   buttonLabel:{
@@ -60,25 +69,84 @@ class ExchangeRatesScreen extends Component {
     }
   }
 
+  // #section-begin Navigation
+  _dismissThisScreen(){
+    const{ navigationStackController }=this.props;
+    navigationStackController.pop();
+  }
+
   _openCurrencyPairModal(){
     const{ navigationStackController }=this.props;
     navigationStackController.pushModal(
-      <CurrencyPairScreen 
-        didChooseCurrencyPair={(pair)=>{console.log(pair)}}
-      />
+      <CurrencyPairScreen />
     );
   }
+  // #section-end Navigation
 
-  _handelAddNewCurrencyButtonAction(){
+  _getExchangeRate(fromCurrency, toCurrency){
+    const{
+      currencyRate
+    }=this.props;
+
+    let fromCurrencyRate = currencyRate.rates[fromCurrency.Code]; //0.850468
+    let toCurrencyRate = currencyRate.rates[toCurrency.Code];
+    let exchangeRate = toCurrencyRate/fromCurrencyRate;
+    
+    return exchangeRate;
+  }
+
+  _handleCancelButtonAction(){
+    this._dismissThisScreen();
+  }
+
+  _handleAddNewCurrencyButtonAction(){
     this._openCurrencyPairModal();
   }
 
-  _handleCurrencyPairCloseRequest(){
-    let isCurrencyPairDialogOpen = false;
-    this.setState({ isCurrencyPairDialogOpen });
+  _handleListClick(currency, index){
   }
 
-  _handleListClick(currency, index){
+  _renderListItems(currencyPairs){
+    let listItems = [];
+
+    currencyPairs.forEach((pair)=>{
+
+      console.log(pair);
+
+      let fromCurrency = pair.fromCurrency;
+      let toCurrency = pair.toCurrency;
+
+      let currencyPairData = {
+        fromCurrency: fromCurrency,
+        toCurrency: toCurrency,
+        exchangeRate: this._getExchangeRate(fromCurrency, toCurrency)
+      }
+
+      let listItem = 
+        <RateListItem
+          key={ pair.id }
+          currencyPairData={ currencyPairData }
+        />;
+      listItems.push(listItem);
+    });
+
+    // Last row will contain button to add new pairs
+    listItems.push(
+      <div 
+        key="PseudoKey"
+        style={ styles.buttonContainer }
+      >
+        <FlatButton
+          label="ADD NEW CURRENCY"
+          onTouchTap={()=>this._handleAddNewCurrencyButtonAction()}
+          hoverColor="#083c77"
+          labelStyle={ styles.buttonLabel }
+          style={styles.button}
+        />
+      </div>
+    );
+
+    return listItems;
   }
 
   render() {
@@ -88,6 +156,7 @@ class ExchangeRatesScreen extends Component {
     } = this.state;
 
     const{
+      currencyPair,
       isMobileView,
       screenWidth
     }=this.props;
@@ -100,23 +169,19 @@ class ExchangeRatesScreen extends Component {
     return (
       <div style={ screenContainerStyle }>
         <BackgroundBubbles />
+        <TopBar
+          title="Rates"
+          didPressCancelButton={()=>this._handleCancelButtonAction()}
+        />
         <List>
-          
+          { this._renderListItems(currencyPair.pairs) }
         </List>
-        <FlatButton
-            label="ADD NEW CURRENCY"
-            onTouchTap={()=>this._handelAddNewCurrencyButtonAction()}
-            hoverColor="#0D55A5"
-            labelStyle={ styles.buttonLabel }
-            style={styles.button}
-          />
       </div>
     );
   }
 }
 
 ExchangeRatesScreen.propTypes = {
-  cancelButtonDidPress: PropTypes.func.isRequired,
   isMobileView: PropTypes.bool.isRequired,
   screenWidth: PropTypes.number.isRequired,
 };
@@ -127,11 +192,14 @@ ExchangeRatesScreen.defaultPropTypes = {
 
 function mapStateToProps(state) {
   return {
+    currencyRate: state.currencyRate,
+    currencyPair: state.currencyPair
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    currencyPairActions: bindActionCreators(CurrencyPairActions, dispatch),
   };
 }
 

@@ -154,11 +154,11 @@ export const Currencies = [
         "Hex": "a5"
     },
     {
-        "Description": "Latvian Lats",
-        "Code": "LVL",
-        "Symbol": "Ls",
-        "Dec": "76, 115",
-        "Hex": "4c, 73"
+        "Description": "Lao Kip",
+        "Code": "LAK",
+        "Symbol": "₭",
+        "Dec": "",
+        "Hex": ""
     },
     {
         "Description": "Lebanese Pound",

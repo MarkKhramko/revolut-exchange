@@ -12,7 +12,8 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    cursor: 'pointer'
   },
 
   roundArea:{
@@ -28,7 +29,8 @@ const styles = {
   icon:{
     color: 'white',
     height: 23,
-    padding: 10
+    padding: 10,
+    paddingTop: 12
   },
 
   labelContainer:{

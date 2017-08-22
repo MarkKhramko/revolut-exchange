@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import * as CurrencyPairActions from '../actions/currencyPairActions';
 
 import {Currencies} from '../constants/Currencies';
 
@@ -63,9 +64,9 @@ class CurrencyPairScreen extends Component {
   // #section-end Navigation
 
   _didChooseCurrencyPair(checkedCurrencies){
-    const {
-      didChooseCurrencyPair
-    } = this.props;
+    const{
+      currencyPairActions
+    }=this.props;
 
     let pair = [];
     checkedCurrencies.forEach((currencyCheck, index)=>{
@@ -74,7 +75,10 @@ class CurrencyPairScreen extends Component {
       }
     });
 
-    didChooseCurrencyPair(pair);
+    console.log(pair);
+
+    currencyPairActions.addPair(pair[0], pair[1]);
+    
     this._dismissThisScreen();
   }
 
@@ -138,7 +142,7 @@ class CurrencyPairScreen extends Component {
       screenWidth
     }=this.props;
 
-    let topBarTitle = selectedCurrenciesCount > 0 ? 
+    let topBarTitle = selectedCurrenciesCount < 1 ? 
       "Select Currency 1" :
       "Select Currency 2";
 
@@ -163,7 +167,6 @@ class CurrencyPairScreen extends Component {
 }
 
 CurrencyPairScreen.propTypes = {
-  didChooseCurrencyPair: PropTypes.func.isRequired,
   screenWidth: PropTypes.number.isRequired,
 };
 
@@ -174,6 +177,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    currencyPairActions: bindActionCreators(CurrencyPairActions, dispatch),
   };
 }
 
