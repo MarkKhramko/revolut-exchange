@@ -8,6 +8,11 @@ See [Open Exchange](https://openexchangerates.org)
 
 See [Material UI](https://github.com/callemall/material-ui)
 
+#### Layout support
+* Mobile
+* Tablet
+* Desktop
+
 #### Local deployment
 ```sh
 $ git clone git@github.com:MarkKhramko/revolut-exchange.git
