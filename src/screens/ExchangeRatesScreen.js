@@ -15,18 +15,14 @@ import CurrencyPairScreen from './CurrencyPairScreen';
 const styles = {
   screenContainer:{
     height: '100vh',
-  },
-
-  dialogTopBar:{
-    backgroundColor: '##0251A9',
-    fontSize: 19,
-    letterSpacing: '0.02em'
+    overflow: 'hidden',
+    textAlign: 'center'
   },
 
   listContainer:{
-    marginTop: 65,
-    height: '100%',
-    overflow: 'scroll'
+    minHeight: '100vh',
+    maxHeight: '100%',
+    overflowY: 'scroll'
   },
 
   listItem:{
@@ -39,8 +35,12 @@ const styles = {
   },
 
   buttonContainer:{
+    width: '100%',
+    height: '100%',
     textAlign: 'center',
-    padding: '10vh'
+    paddingTop: 40,
+    marginBottom: 80,
+    backgroundColor: 'transparent'
   },
 
   button: {
@@ -173,9 +173,11 @@ class ExchangeRatesScreen extends Component {
           title="Rates"
           didPressCancelButton={()=>this._handleCancelButtonAction()}
         />
-        <List>
-          { this._renderListItems(currencyPair.pairs) }
-        </List>
+        <div style={ styles.listContainer }>
+          <List>
+            { this._renderListItems(currencyPair.pairs) }
+          </List>
+        </div>
       </div>
     );
   }

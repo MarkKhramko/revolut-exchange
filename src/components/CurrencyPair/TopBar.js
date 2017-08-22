@@ -13,9 +13,7 @@ const styles = {
     
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
-
-    backgroundColor: '#0066D4'
+    justifyContent: 'center'
   },
 
   titleContainer:{

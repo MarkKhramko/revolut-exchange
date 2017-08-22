@@ -13,10 +13,15 @@ import Checkbox from 'material-ui/Checkbox';
 
 const styles = {
   screenContainer:{
+    height: '100vh',
+    overflow: 'hidden'
   },
 
   listContainer:{
-    overflow: 'scroll',
+    width: '100%',
+    minHeight: '100vh',
+    maxHeight: '100%',
+    overflow: 'scroll'
   },
 
   listItem:{

@@ -13,13 +13,15 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 const styles = {
   screenContainer:{
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    height: '100vh',
+    overflow: 'hidden'
   },
 
   listContainer:{
-    width: '100%',
-    height: '100%',
-    overflow: 'scroll',
+    minHeight: '100vh',
+    maxHeight: '100%',
+    overflow: 'scroll'
   }
 }
 
@@ -32,9 +34,22 @@ class ExchangeHistoryScreen extends Component {
     }
   }
 
-  _exchangeButtonDidPress(){
+  // componentDidMount(){
+  //   this._openExchangeScreen();
+  // }
+
+  // #section-begin Navigation
+  _openExchangeScreen(){
     const{ navigationStackController }=this.props;
-    navigationStackController.push(<ExchangeScreen/>)
+    if(navigationStackController){
+      navigationStackController.push(<ExchangeScreen/>)
+    }
+
+  }
+  // #section-end Navigation
+
+  _exchangeButtonDidPress(){
+    this._openExchangeScreen();
   }
 
   _renderListItems(transactions){

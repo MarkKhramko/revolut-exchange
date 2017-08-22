@@ -16,7 +16,87 @@ const initialState = {
       id: uuidv4(),
       fromCurrency: Currencies[4],
       toCurrency: Currencies[20]
-    }
+    },
+    {
+      id: uuidv4(),
+      fromCurrency: Currencies[4],
+      toCurrency: Currencies[48]
+    },
+    {
+      id: uuidv4(),
+      fromCurrency: Currencies[4],
+      toCurrency: Currencies[20]
+    },
+    {
+      id: uuidv4(),
+      fromCurrency: Currencies[4],
+      toCurrency: Currencies[48]
+    },
+    {
+      id: uuidv4(),
+      fromCurrency: Currencies[4],
+      toCurrency: Currencies[20]
+    },
+    {
+      id: uuidv4(),
+      fromCurrency: Currencies[4],
+      toCurrency: Currencies[48]
+    },
+    {
+      id: uuidv4(),
+      fromCurrency: Currencies[4],
+      toCurrency: Currencies[20]
+    },
+    {
+      id: uuidv4(),
+      fromCurrency: Currencies[4],
+      toCurrency: Currencies[48]
+    },
+    {
+      id: uuidv4(),
+      fromCurrency: Currencies[4],
+      toCurrency: Currencies[20]
+    },
+    {
+      id: uuidv4(),
+      fromCurrency: Currencies[4],
+      toCurrency: Currencies[48]
+    },
+    {
+      id: uuidv4(),
+      fromCurrency: Currencies[4],
+      toCurrency: Currencies[20]
+    },
+    {
+      id: uuidv4(),
+      fromCurrency: Currencies[4],
+      toCurrency: Currencies[48]
+    },
+    {
+      id: uuidv4(),
+      fromCurrency: Currencies[4],
+      toCurrency: Currencies[20]
+    },
+    {
+      id: uuidv4(),
+      fromCurrency: Currencies[4],
+      toCurrency: Currencies[48]
+    },
+    {
+      id: uuidv4(),
+      fromCurrency: Currencies[4],
+      toCurrency: Currencies[20]
+    },
+    {
+      id: uuidv4(),
+      fromCurrency: Currencies[4],
+      toCurrency: Currencies[48]
+    },
+    {
+      id: uuidv4(),
+      fromCurrency: Currencies[4],
+      toCurrency: Currencies[20]
+    },
   ]
 };
 
