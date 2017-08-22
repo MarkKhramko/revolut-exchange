@@ -64,6 +64,12 @@ class ExchangeScreen extends Component {
   }
 
   // #section-begin Exchange Operations
+  /**
+   * Check if amount that User wants to exchange bigger than zero and check if user have amount of money, that he wants to exchange.
+   * @param {Object} currencyData - Currency that User wants to exchange. 
+   * @param {number} reducedAmount - Amount of money that User wants to exchange
+   * @returns {bool} If true - passed validation.
+   */
   _validateReduction(currencyData, reducedAmount){
     const{
       userAccount
@@ -78,13 +84,19 @@ class ExchangeScreen extends Component {
     return false;
   }
 
+  /**
+   * Convert money from currency to curreny by last available rate.
+   * @param {Object} fromCurrency - Currency that User wants to exchange. 
+   * @param {Object} toCurrency - Currency, User wants to receive. 
+   * @param {number} reducedAmount - Amount of money that User wants to exchange
+   * @returns {number} Result of convertation.
+   */
   _getReceivedAmountByLastCurrencyRate(fromCurrency, toCurrency, reducedAmount){
     const{
       currencyRate
     }=this.props;
 
-    // Translate first currency to base currency
-    let fromCurrencyRate = currencyRate.rates[fromCurrency.Code]; //0.850468
+    let fromCurrencyRate = currencyRate.rates[fromCurrency.Code];
     let toCurrencyRate = currencyRate.rates[toCurrency.Code];
     let toCurrencyAmount = toCurrencyRate * reducedAmount;
     let receivedAmount = toCurrencyAmount/fromCurrencyRate;
@@ -92,6 +104,13 @@ class ExchangeScreen extends Component {
     return receivedAmount;
   }
 
+  /**
+   * Saves information about transaction to global state.
+   * @param {Object} fromCurrency - Currency that User exchanged. 
+   * @param {Object} toCurrency - Currency taht User received. 
+   * @param {number} reducedAmount - Amount of money that exchanged.
+   * @param {number} reducedAmount - Amount of money that received.
+   */
   _addTransactionToHistory(fromCurrency, toCurrency, reducedAmount, receivedAmount){
     const{
       exchangeHistoryActions
@@ -102,12 +121,19 @@ class ExchangeScreen extends Component {
       to: toCurrency,
       reducedAmount: reducedAmount,
       receivedAmount: receivedAmount,
-      timestamp: new Date()
+      timestamp: new Date() //Current time
     };
 
     exchangeHistoryActions.addTransaction(transaction);
   }
 
+  /**
+   * Reduce amount of exchanged currency and add to received currency.
+   * @param {Object} fromCurrency - Currency that User exchanged. 
+   * @param {Object} toCurrency - Currency taht User received. 
+   * @param {number} reducedAmount - Amount of money that exchanged.
+   * @param {number} reducedAmount - Amount of money that received.
+   */
   _changeUserAccountBalance(fromCurrency, toCurrency, reducedAmount, receivedAmount){
     const{
       userAccountActions
@@ -120,12 +146,18 @@ class ExchangeScreen extends Component {
 
   // #section-begin Navigation
   _dismissThisScreen(){
-    const{ navigationStackController }=this.props;
+    const{
+      navigationStackController 
+    }=this.props;
     navigationStackController.pop();
   }
 
   _openRatesScreen(){
-    const{ navigationStackController, isMobileView }=this.props;
+    const{
+      navigationStackController, 
+      isMobileView 
+    }=this.props;
+
     navigationStackController.push(
       <ExchangeRatesScreen
         isMobileView={isMobileView}
@@ -146,9 +178,13 @@ class ExchangeScreen extends Component {
 
   _handleExchangeButtonAction(){
 
+    // Get currency that User selected.
     let fromCurrency = this.topCarousel.getCurrencyData();
+    // Get amount that user entered.
     let reducedAmount = this.topCarousel.getExchangeAmount();
 
+    // if amount that User wants to exchange bigger than zero
+    // and if user have amount of money, that he wants to exchange.
     if(this._validateReduction(fromCurrency, reducedAmount)){
 
       let toCurrency = this.bottomCarousel.getCurrencyData();
@@ -161,6 +197,7 @@ class ExchangeScreen extends Component {
         isMobileView
       }=this.props;
 
+      // If it is mobile layout, go back to exchange history screen.
       if(isMobileView){
         this._dismissThisScreen();
       }
@@ -177,6 +214,10 @@ class ExchangeScreen extends Component {
   // #section-end Interactions
 
   // #section-begin Slides Data
+  /**
+   * Creates slides data object for top carousel. Each object contains props to pass to slide.
+   * @returns {Array}
+   */
   _getTopCarouselSlidesData(){
 
     const{ userAccount }=this.props;
@@ -206,6 +247,13 @@ class ExchangeScreen extends Component {
     return slidesData;
   }
 
+  /**
+   * Creates slides data object for bottom carousel. Each object contains props to pass to slide.
+   * @param {Object} topCarouselCurrency - Currency that User wants to exchange.
+   * @param {Object} topCarouselAmount - Amount of currency that User wants to exchange.
+   * @param {Object} userAccount - Object with all Users's currencies amounts.
+   * @returns {Array}
+   */
   _getBottomCarouselSlidesData(topCarouselCurrency, topCarouselAmount, userAccount){
     let currencies = [
       Currencies[4], // GBP
@@ -220,6 +268,7 @@ class ExchangeScreen extends Component {
     ];
 
     let receivedAmounts;
+    // If top carousel was mounted to DOM
     if(this.topCarousel){
 
       receivedAmounts = [];
@@ -228,9 +277,12 @@ class ExchangeScreen extends Component {
 
       for(let i=0; i<3; i++){
         let toCurrency = currencies[i];
+        // Convert amount of currency that should be exchanged to new currency.
         receivedAmounts.push(this._getReceivedAmountByLastCurrencyRate(fromCurrency, toCurrency, reducedAmount));
       }
     }
+    // If top carousel wasn't mounted to DOM,
+    // there were none currency selected and none amounts entered.
     else{
       receivedAmounts = [0,0,0];
     }

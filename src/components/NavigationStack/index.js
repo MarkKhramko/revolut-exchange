@@ -17,6 +17,8 @@ export default class NavigationStack extends Component {
     super(props);
 
     let componentsArray = [];
+    // With props we received array of components, but before rendering them, 
+    // we should add additional props, such as key and stackController
     props.components.forEach((component)=>{
       componentsArray.push(this._addNewPropsToComponent(component))
     });
@@ -27,6 +29,12 @@ export default class NavigationStack extends Component {
     }
   }
 
+  // #section-begin Stack control methods
+  /**
+   * Saves new component to stack.
+   * @param {Object} component - Component to add to stack.
+   * @param {String} transition - Transiion animation name.
+   */
   _pushComponent(component, transition){
     let components = this.state.components;
     let changedComponent = this._addNewPropsToComponent(component);
@@ -35,29 +43,56 @@ export default class NavigationStack extends Component {
     this.setState({ components, currentTransitionName });
   }
 
+  /**
+   * Removes the top most component from stack.
+   * @param {String} transition - Transiion animation name.
+   */
   _popLastComponent(transition){
     let components = this.state.components;
     components.pop();
     let currentTransitionName = transition;
     this.setState({components, currentTransitionName});
   }
+  // #section-end Stack control methods
 
+  // #section-begin Public methods
+  /**
+   * Saves new component to stack with default transition in animation.
+   */
   pushComponent(component){
     this._pushComponent(component, TransitionConstants.IN);
   }
 
+  /**
+   * Removes the top most component from with default transition out animation.
+   */
   popLastComponent(){
     this._popLastComponent(TransitionConstants.OUT);
   }
 
+  /**
+   * Saves new component to stack with modal transition in animation.
+   */
   pushModal(component){
     this._pushComponent(component, TransitionConstants.MODAL_IN);
   }
 
+  /**
+   * Removes the top most component from with modal transition out animation.
+   */
   popModal(){
     this._popLastComponent(TransitionConstants.MODAL_OUT);
   }
+  // #section-end Public methods
 
+  /**
+   * Returns the same component with new props, such as
+   * unique key
+   * navigationStackController object
+   *
+   * @param {Object} component - Component to modify
+   * @returns {Object} Modified component
+   */
   _addNewPropsToComponent(component){
 
     let stackRef = this;
@@ -72,6 +107,13 @@ export default class NavigationStack extends Component {
     return newComponent;
   }
 
+  /**
+   * Returns NavigationStackController object. 
+   * It is remote for components in the stack to control stack.
+   *
+   * @param {Object} stackRef - Reference to the stack (This class).
+   * @returns {Object} controller
+   */
   _createNavigationStackController(stackRef){
     let controller = {
       push:function(component){
@@ -101,6 +143,7 @@ export default class NavigationStack extends Component {
       componentHeight
     }= this.props;
 
+    // Before adding component to the DOM, pass current screen width.
     let lastComponent = React.cloneElement(
       components[components.length-1],
       {

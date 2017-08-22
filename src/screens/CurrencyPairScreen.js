@@ -48,12 +48,18 @@ class CurrencyPairScreen extends Component {
     super(props);
 
     this.state = {
-      checkedCurrencies:this._initCheckedCurrencies(),
+      // Array that holds bools for every currency. It will be filled with 'false' by default.
+      checkedCurrencies:this._getDefaultCheckedCurrenciesArray(),
+      // How many currencies User has selected already.
       selectedCurrenciesCount: 0
     }
   }
 
-  _initCheckedCurrencies(){
+  /**
+   * Returns array with size of all currencies, where each value is false
+   * @returns {Array}
+   */
+  _getDefaultCheckedCurrenciesArray(){
     let checkedCurrencies = [];
     Currencies.forEach((currency)=>{
       checkedCurrencies.push(false);
@@ -62,12 +68,22 @@ class CurrencyPairScreen extends Component {
   }
 
   // #section-begin Navigation
+  /**
+   * Remove current screen from navigation stack with modal transition.
+   */
   _dismissThisScreen(){
-    const{ navigationStackController }=this.props;
+    const{ 
+      navigationStackController 
+    }=this.props;
     navigationStackController.popModal();
   }
   // #section-end Navigation
 
+  // #section-begin Interactions
+  /**
+   * Saves selected pair to global state. And goes back to previous screen.
+   * @param {Array} checkedCurrencies - Array of all currencies checked and not.
+   */
   _didChooseCurrencyPair(checkedCurrencies){
     const{
       currencyPairActions
@@ -80,18 +96,26 @@ class CurrencyPairScreen extends Component {
       }
     });
 
+    // Save selected pair to global state.
     currencyPairActions.addPair(pair[0], pair[1]);
-    
+    // Go back to previous screen
     this._dismissThisScreen();
   }
 
-  _handleListClick(currency, index){
+  /**
+   * Saves checked currency. 
+   * If pair was selected, procceeds with notification algorythm.
+   * @param {number} index - index of checked currency
+   */
+  _handleListClick(index){
     let{ 
       checkedCurrencies, 
       selectedCurrenciesCount 
     } = this.state;
 
+    // Check currency
     checkedCurrencies[index] = true;
+    // Increase amount of checked currencies
     selectedCurrenciesCount += 1;
 
     this.setState({ 
@@ -99,12 +123,17 @@ class CurrencyPairScreen extends Component {
       selectedCurrenciesCount 
     });
 
-    // If pair was selected, call back
+    // If pair was selected
     if(selectedCurrenciesCount > 1){
       this._didChooseCurrencyPair(checkedCurrencies);
     }
   }
+  // #section-end Interactions
 
+  /**
+   * Creates array of ListItem and fills each item with currency information.
+   * @returns {Array} ListItems array.
+   */
   _renderCurrenciesArray(){
     const{
       checkedCurrencies
@@ -117,7 +146,7 @@ class CurrencyPairScreen extends Component {
         <ListItem 
           key={currency.Code} 
           primaryTogglesNestedList={true}
-          onClick={()=>this._handleListClick(currency, index)}
+          onClick={()=>this._handleListClick(index)}
           primaryText={text}
           leftCheckbox={
             <Checkbox 
@@ -126,7 +155,7 @@ class CurrencyPairScreen extends Component {
               iconStyle={ styles.iconStyle }
             />
           }
-          disabled={ false }
+          disabled={ checkedCurrencies[index] }
           innerDivStyle={ styles.listItem }
           hoverColor='rgba(255, 255, 255, 0.15)'
         />
@@ -145,6 +174,9 @@ class CurrencyPairScreen extends Component {
       screenWidth
     }=this.props;
 
+    // If User didn't selected any currency, 
+    // present him with option 1,
+    // otherwise with option 2
     let topBarTitle = selectedCurrenciesCount < 1 ? 
       "Select Currency 1" :
       "Select Currency 2";

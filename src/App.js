@@ -30,7 +30,7 @@ class App extends Component {
   }
 
   componentWillUnmount() {
-    // Delete timer, when component will be removed from DOM
+    // Delete timer, when component will be removed from DOM.
     clearTimeout(this.timer);
   }
 
@@ -48,8 +48,17 @@ class App extends Component {
     .then((response) => response.json())
     .then(response => {
       let rates = response.rates;
-      let timestamp = response.timestamp;
-      this._saveCurrencyRates(rates, timestamp);
+      // In case
+      if(rates){
+        if ("production" !== process.env.NODE_ENV){
+          console.log('Received rates');
+        }
+        let timestamp = response.timestamp;
+        this._saveCurrencyRates(rates, timestamp);
+      }
+      else{
+        console.log('Could not receive rates');
+      }
     })
     .catch((err) => {
         console.log('Fetch error', err)

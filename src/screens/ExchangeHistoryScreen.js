@@ -85,7 +85,7 @@ class ExchangeHistoryScreen extends Component {
         <div style={ styles.listContainer }>
             <List>
               <ReactCSSTransitionGroup
-                transitionName="example"
+                transitionName="slide"
                 transitionEnterTimeout={300}
                 transitionLeaveTimeout={300}
                 component="div"

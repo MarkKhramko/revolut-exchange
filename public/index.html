@@ -34,49 +34,19 @@
           color: #fff;
       }
 
-      .example-enter {
+      .slide-enter {
         height: 0px;
         opacity: 0;
       }
 
-      .example-enter.example-enter-active {
+      .slide-enter.slide-enter-active {
         height: 75px;
         opacity: 1;
         transition: height 300ms ease-out, opacity 300ms ease;
       }
 
-      .example-leave {
-        opacity: 1;
-      }
-
-      /* Slide animation */
-      .slide-enter {
-          transform: translateX(-100%);
-      }
-      .slide-enter-active {
-          animation: slide-in 300ms ease-out forwards;
-      }
       .slide-leave {
-          transform: translateX(0%);
-      }
-      .slide-leave-active {
-          animation: slide-out 300ms ease-out forwards;
-      }
-      @keyframes slide-in {
-          from {
-              transform: translateX(-100%);
-          }
-          to {
-              transform: translateX(0%);
-          }
-      }
-      @keyframes slide-out {
-          from {
-              transform: translateX(0%);
-          }
-          to {
-              transform: translateX(100%);
-          }
+        opacity: 1;
       }
     </style>
     <link rel="stylesheet" type="text/css" href="animations.css">
