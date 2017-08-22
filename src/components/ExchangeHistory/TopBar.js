@@ -14,7 +14,7 @@ const styles = {
     padding: 5,
     zIndex: 100,
     
-    display: 'flex',
+    display: '-webkit-flex',
     alignItems: 'center',
     justifyContent: 'center'
   }

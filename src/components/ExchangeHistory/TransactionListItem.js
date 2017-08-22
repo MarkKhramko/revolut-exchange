@@ -9,6 +9,10 @@ import IconAutorenew from 'material-ui/svg-icons/action/autorenew';
 
 const styles = {
 
+  listItem:{
+    backgroundColor: 'white'
+  },
+
   splitTextContainer:{
     width: '100%',
     display: 'inline-flex',
@@ -103,9 +107,10 @@ export default class TransactionListItem extends Component {
 
     return (
         <ListItem
-            leftAvatar={<Avatar icon={<IconAutorenew />} />}
-            primaryText={primaryTextComponent}
-            secondaryText={secondaryTextComponent}
+          leftAvatar={<Avatar icon={<IconAutorenew />} />}
+          primaryText={primaryTextComponent}
+          secondaryText={secondaryTextComponent}
+          style={ styles.listItem }
         />
     );
   }
